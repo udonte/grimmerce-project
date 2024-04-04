@@ -9,8 +9,10 @@ const AccountCreated = () => {
       <div className="h-screen flex flex-col items-center justify-center">
         <p className="text-3xl font-bold mb-2">Account created successfully</p>
         <p className="mb-2">You can proceed to log in</p>
-        <div className="w-[300px]">
-          <Button onClick={() => navigate("/login")}>Log in</Button>
+        <div className="w-[300px] mt-4">
+          <Button size={"lg"} onClick={() => navigate("/login")}>
+            Log in
+          </Button>
         </div>
       </div>
     </div>
