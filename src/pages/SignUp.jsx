@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import CustomInput from "../components/CustomInput";
 import CustomDropdown from "../components/CustomDropDown";
 import Button from "../components/Button";
+import axiosInstance from "../helperFunctions/axios.utlil";
 
 const SignUp = () => {
   const [formData, setFormData] = useState();
@@ -16,6 +17,12 @@ const SignUp = () => {
   const onSubmit = (data) => {
     setFormData(data);
     console.log(data); // You can handle form submission here
+    try {
+      const response = axiosInstance.post("", data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (

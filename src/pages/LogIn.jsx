@@ -4,9 +4,10 @@ import CustomInput from "../components/CustomInput";
 import Button from "../components/Button";
 import CustomCheckbox from "../components/CustomCheckbox";
 import { useNavigate } from "react-router-dom";
+import axiosInstance from "../helperFunctions/axios.utlil";
 
 const LogIn = () => {
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({});
   const navigate = useNavigate();
   const {
     register,
@@ -17,6 +18,12 @@ const LogIn = () => {
   const onSubmit = (data) => {
     setFormData(data);
     console.log(data); // You can handle form submission here
+    try {
+      const response = axiosInstance.post("", data);
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
