@@ -5,9 +5,11 @@ import Button from "../components/Button";
 import CustomCheckbox from "../components/CustomCheckbox";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../helperFunctions/axios.utlil";
+import { toast } from "react-toastify";
+import Spinner from "../components/Spinner/Spinner";
 
 const LogIn = () => {
-  const [formData, setFormData] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {
     register,
@@ -15,20 +17,27 @@ const LogIn = () => {
     formState: { errors },
   } = useForm();
 
-  const onSubmit = (data) => {
-    setFormData(data);
-    console.log(data); // You can handle form submission here
+  const onSubmit = async (data) => {
+    console.log(data);
     try {
-      const response = axiosInstance.post("", data);
-      console.log(response);
+      setIsLoading(true);
+      const response = await axiosInstance.post("/auth/login", data);
+
+      setIsLoading(false);
+      console.log("login response", response);
+      toast.success("Login successful");
+      //use effect to check if token is in the local storage
+      localStorage.setItem("access_token", `${response.data.data.accessToken}`);
+      console.log(response.data.data);
+      navigate("/", { state: response.data.data });
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
+      toast.error(error.response.data.message);
     }
   };
 
   return (
     <div>
-      <pre>{JSON.stringify(formData, undefined, 2)}</pre>
       <div className="w-full h-screen flex items-start">
         <div className="w-1/2 bg-red-900 h-screen"></div>
         <div className="w-1/2 flex items-start justify-center py-4">
@@ -84,7 +93,10 @@ const LogIn = () => {
               </p>
             </div>
             <div className="w-full text-center mb-6">
-              <Button type="submit">Login</Button>
+              <Button type="submit">
+                {" "}
+                {isLoading ? <Spinner /> : "Login"}
+              </Button>
             </div>
             <div className="text-center">
               <p className=" font-bold text-sm">
@@ -93,7 +105,7 @@ const LogIn = () => {
                   className="text-red-700 cursor-pointer"
                   onClick={() => navigate("/signup")}
                 >
-                  Sign up
+                  Sign Up
                 </span>
               </p>
             </div>

@@ -4,9 +4,12 @@ import CustomInput from "../components/CustomInput";
 import CustomDropdown from "../components/CustomDropDown";
 import Button from "../components/Button";
 import axiosInstance from "../helperFunctions/axios.utlil";
+import Spinner from "../components/Spinner/Spinner";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
-  const [formData, setFormData] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -14,14 +17,21 @@ const SignUp = () => {
     watch,
   } = useForm();
 
-  const onSubmit = (data) => {
-    setFormData(data);
+  const onSubmit = async (data) => {
     console.log(data); // You can handle form submission here
     try {
-      const response = axiosInstance.post("", data);
+      setIsLoading(true);
+      const response = await axiosInstance.post("/user/register", data);
       console.log(response);
+      setIsLoading(false);
+
+      console.log("signup Successful");
+      toast.success("signup Successful");
+      navigate("/login");
     } catch (error) {
-      console.log(error);
+      setIsLoading(false);
+      console.log(error.response.data.message);
+      toast.error(error.response.data.message);
     }
   };
 
@@ -39,7 +49,7 @@ const SignUp = () => {
                 className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
                 placeholder="Enter First Name"
                 type="text"
-                {...register("first_name", {
+                {...register("firstName", {
                   required: "A first name is required",
                 })}
               />
@@ -54,7 +64,7 @@ const SignUp = () => {
                 className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
                 placeholder="Enter Last Name"
                 type="text"
-                {...register("last_name", {
+                {...register("lastName", {
                   required: "A last name is required",
                 })}
               />
@@ -86,7 +96,7 @@ const SignUp = () => {
                 className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
                 placeholder="Enter Phone Number"
                 type="tel"
-                {...register("phone_number", {
+                {...register("phoneNumber", {
                   required: "Phone number is required",
                 })}
               />
@@ -99,7 +109,7 @@ const SignUp = () => {
               <label className="text-gray-500 font-bold">User Type</label>
               <select
                 className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
-                {...register("user_type", {
+                {...register("userType", {
                   required: "User Type is required",
                 })}
               >
@@ -137,7 +147,7 @@ const SignUp = () => {
                 className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
                 placeholder="Confirm Password"
                 type="password"
-                {...register("confirm_password", {
+                {...register("confirmPassword", {
                   required: "Confirm Password is required",
                   validate: (value) =>
                     value === watch("password") || "The passwords do not match",
@@ -149,7 +159,9 @@ const SignUp = () => {
             </div>
             {/* Submit Button */}
             <div className="w-full text-center">
-              <Button type="submit">Create Account</Button>
+              <Button type="submit">
+                {isLoading ? <Spinner /> : "Create Account"}
+              </Button>
             </div>
           </form>
         </div>
