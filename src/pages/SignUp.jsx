@@ -6,8 +6,10 @@ import Button from "../components/Button";
 import axiosInstance from "../helperFunctions/axios.utlil";
 import Spinner from "../components/Spinner/Spinner";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
 
   const {
@@ -27,7 +29,7 @@ const SignUp = () => {
 
       console.log("signup Successful");
       toast.success("signup Successful");
-      navigate("/login");
+      navigate("/account-created");
     } catch (error) {
       setIsLoading(false);
       console.log(error.response.data.message);
@@ -38,9 +40,9 @@ const SignUp = () => {
   return (
     <div>
       <div className="w-full h-screen flex items-start">
-        <div className="w-1/2 bg-red-900 h-screen"></div>
-        <div className="w-1/2 flex items-start justify-center py-4">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-[50%]">
+        <div className="hidden md:block md:w-1/2 bg-red-900 h-screen "></div>
+        <div className="w-full md:w-1/2 flex items-start justify-center py-4 px-4 md:px-0 ">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-[50%]">
             <p className="text-2xl font-bold mb-8">Sign Up</p>
             {/* First Name */}
             <div className="mb-2 w-full">
@@ -162,6 +164,12 @@ const SignUp = () => {
               <Button type="submit">
                 {isLoading ? <Spinner /> : "Create Account"}
               </Button>
+            </div>
+            <div
+              className="text-red-700 cursor-pointer font-bold text-sm text-center mt-4"
+              onClick={() => navigate("/")}
+            >
+              Go Back to Home
             </div>
           </form>
         </div>

@@ -18,18 +18,15 @@ const LogIn = () => {
   } = useForm();
 
   const onSubmit = async (data) => {
-    console.log(data);
     try {
       setIsLoading(true);
       const response = await axiosInstance.post("/auth/login", data);
 
       setIsLoading(false);
-      console.log("login response", response);
       toast.success("Login successful");
       //use effect to check if token is in the local storage
       localStorage.setItem("access_token", `${response.data.data.accessToken}`);
-      console.log(response.data.data);
-      navigate("/", { state: response.data.data });
+      navigate("/dashboard", { state: response.data.data });
     } catch (error) {
       setIsLoading(false);
       toast.error(error.response.data.message);
@@ -39,9 +36,9 @@ const LogIn = () => {
   return (
     <div>
       <div className="w-full h-screen flex items-start">
-        <div className="w-1/2 bg-red-900 h-screen"></div>
-        <div className="w-1/2 flex items-start justify-center py-4">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-[50%]">
+        <div className="hidden md:flex md:w-1/2 bg-red-900 h-screen"></div>
+        <div className="w-full md:w-1/2 flex items-start justify-center py-4 px-4 md:px-0">
+          <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-[50%]">
             <p className="text-2xl font-bold mb-8">Log in</p>
             <div className="mb-2 w-full">
               <label className=" text-gray-500 font-bold">Email</label>
@@ -82,11 +79,11 @@ const LogIn = () => {
                   type="checkbox"
                   {...register("remember_me")}
                 />
-                <p className="text-xs font-bold text-gray-600">Remember me</p>
+                <p className="text-xs text-gray-600">Remember me</p>
               </div>
 
               <p
-                className="text-red-700 font-bold cursor-pointer"
+                className="text-red-700 text-xs font-bold cursor-pointer"
                 onClick={() => navigate("/forgotpassword")}
               >
                 Forgotten Password?
@@ -108,6 +105,12 @@ const LogIn = () => {
                   Sign Up
                 </span>
               </p>
+            </div>
+            <div
+              className="text-red-700 cursor-pointer font-bold text-sm text-center mt-4"
+              onClick={() => navigate("/")}
+            >
+              Go Back to Home
             </div>
           </form>
         </div>
