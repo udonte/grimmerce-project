@@ -2,8 +2,10 @@ import React from "react";
 import Modal from "./Modal/Modal";
 import Cloth1 from "../assets/images/img (1).jpg";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 
 const ProductDetailsModal = ({ isOpen, onClose, isLogged }) => {
+  const navigate = useNavigate();
   return (
     <div>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -45,7 +47,9 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged }) => {
                 {isLogged ? (
                   <Button>Add to cart</Button>
                 ) : (
-                  <Button>Please Login</Button>
+                  <Button onClick={() => navigate("/login")}>
+                    Please Login
+                  </Button>
                 )}
               </div>
             </div>
