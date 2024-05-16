@@ -89,7 +89,7 @@ const Dashboard = () => {
             </div>
             {/* large screensign up */}
             <div className="hidden lg:w-1/2 text-white lg:flex lg:items-center lg:justify-end lg:gap-8">
-              <div className="flex flex-col relative">
+              <div className="flex flex-col items-start relative">
                 <div className="flex items-end gap-1">
                   <FaUser color="#fff" size={20} />
                   <p>Account</p>

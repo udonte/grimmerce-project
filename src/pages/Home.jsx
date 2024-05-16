@@ -47,7 +47,7 @@ const Home = () => {
                 name=""
                 id=""
                 placeholder="Search item"
-                className="ml-4 pl-4 border-none outline-none w-full"
+                className="ml-4 pl-4 border-none outline-none w-full "
               />
             </div>
             {/* large screensign up */}
@@ -111,23 +111,42 @@ const Home = () => {
       {/* end of nav */}
 
       {/* category */}
-      <div className="bg-gray-800 py-2 px-4 ">
-        <div className="hidden lg:flex items-center justify-center gap-8 cursor-pointer">
+      <div className="bg-gray-800 py-1 px-2 ">
+        <div className="hidden lg:flex items-center gap-8">
           {categories.map((item, index) => (
             <div key={index} className="cursor-pointer text-xl text-white">
               {item}
             </div>
           ))}
         </div>
-        <div className="lg:hidden text-white flex justify-center item-center">
-          <select className="bg-gray-800 text-white py-2 px-4 border-[1px] border-white rounded">
-            <option defaultValue>Categories</option>
-            {categories.map((item, index) => (
-              <option key={index} className="py-2 px-2 hover:bg-red-400 ">
-                {item}
-              </option>
-            ))}
-          </select>
+
+        <div
+          className="lg:hidden text-white text-xs flex items-center justify-center gap-8 overflow-x-auto max-w-full whitespace-nowrap px-4"
+          style={{
+            scrollbarWidth: "thin" /* For Firefox */,
+            WebkitScrollbarWidth: "thin" /* For WebKit-based browsers */,
+            scrollbarTrackColor:
+              "#f1f1f1" /* Background color of the scrollbar track */,
+            scrollbarColor:
+              "#888 #f1f1f1" /* Color of the scrollbar thumb and track */,
+            borderRadius: "4px" /* Radius of the scrollbar thumb */,
+          }}
+        >
+          {/* 
+          
+          <div className="scrollmenu bg-gray-900 overflow-auto whitespace-nowrap">
+      <a href="#home" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">Home</a>
+      <a href="#news" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">News</a>
+      <a href="#contact" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">Contact</a>
+      <a href="#about" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">About</a>
+      {/* Add more links here if needed 
+    </div>
+       */}
+          {categories.map((item, index) => (
+            <div key={index} className="cursor-pointer text-white ">
+              {item}
+            </div>
+          ))}
         </div>
       </div>
 

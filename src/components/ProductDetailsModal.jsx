@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Modal from "./Modal/Modal";
 import Cloth1 from "../assets/images/img (1).jpg";
 import Button from "./Button";
@@ -6,6 +6,8 @@ import { useNavigate } from "react-router-dom";
 
 const ProductDetailsModal = ({ isOpen, onClose, isLogged }) => {
   const navigate = useNavigate();
+  const [prodQty, setProdQty] = useState(1);
+
   return (
     <div>
       <Modal isOpen={isOpen} onClose={onClose}>
@@ -31,11 +33,20 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged }) => {
                 <p className="font-bold">Quantity</p>
                 <div className="flex items-center">
                   <div className="w-12">
-                    <Button color={"secondary"}>-</Button>
+                    <Button
+                      color={"secondary"}
+                      onClick={() =>
+                        setProdQty((prev) => (prev <= 1 ? 1 : prev - 1))
+                      }
+                    >
+                      -
+                    </Button>
                   </div>
-                  <div className="text-center w-12">3</div>
+                  <div className="text-center w-12">{prodQty}</div>
                   <div className="w-12">
-                    <Button>+</Button>
+                    <Button onClick={() => setProdQty((prev) => prev + 1)}>
+                      +
+                    </Button>
                   </div>
                 </div>
               </div>
@@ -48,7 +59,7 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged }) => {
                   <Button>Add to cart</Button>
                 ) : (
                   <Button onClick={() => navigate("/login")}>
-                    Please Login
+                    Please Login to continue
                   </Button>
                 )}
               </div>

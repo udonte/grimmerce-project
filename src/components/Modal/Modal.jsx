@@ -7,7 +7,7 @@ const Modal = ({ isOpen, onClose, children }) => {
     <div className="fixed z-10 inset-0 overflow-y-auto">
       <div className="flex items-center justify-center min-h-screen">
         <div className="fixed inset-0 bg-gray-500 opacity-75"></div>
-        <div className="relative bg-white w-1/2 p-8 rounded-lg flex flex-col items-start">
+        <div className="relative bg-white w-full md:w-1/2 p-8 rounded-lg flex flex-col items-start">
           {/* header */}
           <div className="flex items-start justify-between w-full">
             <p className="text-2xl font-bold">Product Details</p>

@@ -43,7 +43,7 @@ const LogIn = () => {
             <div className="mb-2 w-full">
               <label className=" text-gray-500 font-bold">Email</label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Enter Email"
                 type="email"
                 {...register("email", {
@@ -59,7 +59,7 @@ const LogIn = () => {
             <div className="mb-2 w-full">
               <label className=" text-gray-500 font-bold">Password</label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Enter Password"
                 type="password"
                 {...register("password", {

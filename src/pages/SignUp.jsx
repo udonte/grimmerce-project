@@ -38,17 +38,20 @@ const SignUp = () => {
   };
 
   return (
-    <div>
-      <div className="w-full h-screen flex items-start">
-        <div className="hidden md:block md:w-1/2 bg-red-900 h-screen "></div>
-        <div className="w-full md:w-1/2 flex items-start justify-center py-4 px-4 md:px-0 ">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-[50%]">
-            <p className="text-2xl font-bold mb-8">Sign Up</p>
+    <div className=" h-screen flex">
+      <div className="hidden md:block md:w-1/2 bg-red-900 h-full"></div>
+      <div className="w-full md:w-1/2 flex items-start justify-center md:px-0 h-full my-8 px-2">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="w-full md:w-[70%] h-full"
+        >
+          <p className="text-2xl font-bold mb-8">Sign Up</p>
+          <div className=" block md:flex md:items-center md:gap-2">
             {/* First Name */}
             <div className="mb-2 w-full">
               <label className="text-gray-500 font-bold">First Name</label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Enter First Name"
                 type="text"
                 {...register("firstName", {
@@ -63,7 +66,7 @@ const SignUp = () => {
             <div className="mb-2 w-full">
               <label className="text-gray-500 font-bold">Last Name</label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Enter Last Name"
                 type="text"
                 {...register("lastName", {
@@ -74,11 +77,13 @@ const SignUp = () => {
                 {errors.last_name?.message}
               </p>
             </div>
+          </div>
+          <div className="block md:flex md:items-center md:gap-2">
             {/* Email */}
             <div className="mb-2 w-full">
               <label className="text-gray-500 font-bold">Email</label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Enter Email"
                 type="email"
                 {...register("email", {
@@ -95,7 +100,7 @@ const SignUp = () => {
             <div className="mb-2 w-full">
               <label className="text-gray-500 font-bold">Phone Number</label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Enter Phone Number"
                 type="tel"
                 {...register("phoneNumber", {
@@ -106,28 +111,28 @@ const SignUp = () => {
                 {errors.phone_number?.message}
               </p>
             </div>
-            {/* User Type */}
-            <div className="mb-2 w-full">
-              <label className="text-gray-500 font-bold">User Type</label>
-              <select
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
-                {...register("userType", {
-                  required: "User Type is required",
-                })}
-              >
-                <option value="">Select User Type</option>
-                <option value="buyer">Buyer</option>
-                <option value="seller">Seller</option>
-              </select>
-              <p className="text-red-500 text-xs">
-                {errors.user_type?.message}
-              </p>
-            </div>
+          </div>
+          {/* User Type */}
+          <div className="mb-2 w-full">
+            <label className="text-gray-500 font-bold">User Type</label>
+            <select
+              className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
+              {...register("userType", {
+                required: "User Type is required",
+              })}
+            >
+              <option value="">Select User Type</option>
+              <option value="buyer">Buyer</option>
+              <option value="seller">Seller</option>
+            </select>
+            <p className="text-red-500 text-xs">{errors.user_type?.message}</p>
+          </div>
+          <div className="block md:flex md:items-center md:gap-2">
             {/* Password */}
             <div className="mb-2 w-full">
               <label className="text-gray-500 font-bold">Password</label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Enter Password"
                 type="password"
                 {...register("password", {
@@ -146,7 +151,7 @@ const SignUp = () => {
                 Confirm Password
               </label>
               <input
-                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2"
+                className="h-[40px] outline-none w-full border-[1px] focus:border-red-700 rounded-lg shadow-sm my-2 py-1 px-2 placeholder:text-sm placeholder:text-gray-200"
                 placeholder="Confirm Password"
                 type="password"
                 {...register("confirmPassword", {
@@ -159,20 +164,20 @@ const SignUp = () => {
                 {errors.confirm_password?.message}
               </p>
             </div>
-            {/* Submit Button */}
-            <div className="w-full text-center">
-              <Button type="submit">
-                {isLoading ? <Spinner /> : "Create Account"}
-              </Button>
-            </div>
-            <div
-              className="text-red-700 cursor-pointer font-bold text-sm text-center mt-4"
-              onClick={() => navigate("/")}
-            >
-              Go Back to Home
-            </div>
-          </form>
-        </div>
+          </div>
+          {/* Submit Button */}
+          <div className="w-full text-center">
+            <Button type="submit">
+              {isLoading ? <Spinner /> : "Create Account"}
+            </Button>
+          </div>
+          <div
+            className="text-red-700 cursor-pointer font-bold text-sm text-center mt-4"
+            onClick={() => navigate("/")}
+          >
+            Go Back to Home
+          </div>
+        </form>
       </div>
     </div>
   );
