@@ -24,6 +24,7 @@ import Footer from "../components/footer/Footer";
 import Modal from "../components/Modal/Modal";
 import { RiCloseLine, RiDeleteBack2Fill, RiMenu3Line } from "react-icons/ri";
 import ProductDetailsModal from "../components/ProductDetailsModal";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -77,7 +78,7 @@ const Dashboard = () => {
             Grimmerce
           </div>
           <div className="bg-red-900 p-2 md:p-8 w-full flex items-center justify-between gap-4">
-            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-4 md:px-8 lg:w-1/2 w-full">
+            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-4 md:px-8 lg:w-2/3 w-full">
               <FaSearch />
               <input
                 type="search"
@@ -88,7 +89,7 @@ const Dashboard = () => {
               />
             </div>
             {/* large screensign up */}
-            <div className="hidden lg:w-1/2 text-white lg:flex lg:items-center lg:justify-end lg:gap-8">
+            <div className="hidden lg:w-1/3 text-white lg:flex lg:items-center lg:justify-end lg:gap-8">
               <div className="flex flex-col items-start relative">
                 <div className="flex items-end gap-1">
                   <FaUser color="#fff" size={20} />
@@ -173,7 +174,7 @@ const Dashboard = () => {
                     onClick={() => setToggleMenu(false)}
                   />
                 ) : (
-                  <RiMenu3Line
+                  <GiHamburgerMenu
                     color="#fff"
                     size={27}
                     onClick={() => setToggleMenu(true)}
@@ -241,15 +242,23 @@ const Dashboard = () => {
             </div>
           ))}
         </div>
-        <div className="lg:hidden text-white flex justify-center item-center">
-          <select className="bg-gray-800 text-white py-2 px-4 border-[1px] border-white rounded">
-            <option defaultValue>Categories</option>
-            {categories.map((item, index) => (
-              <option key={index} className="py-2 px-2 hover:bg-red-400 ">
-                {item}
-              </option>
-            ))}
-          </select>
+        <div
+          className="lg:hidden text-white text-xs flex items-center justify-center gap-8 overflow-x-auto max-w-full whitespace-nowrap px-4"
+          style={{
+            scrollbarWidth: "thin" /* For Firefox */,
+            WebkitScrollbarWidth: "thin" /* For WebKit-based browsers */,
+            scrollbarTrackColor:
+              "#f1f1f1" /* Background color of the scrollbar track */,
+            scrollbarColor:
+              "#888 #f1f1f1" /* Color of the scrollbar thumb and track */,
+            borderRadius: "4px" /* Radius of the scrollbar thumb */,
+          }}
+        >
+          {categories.map((item, index) => (
+            <div key={index} className="cursor-pointer text-white ">
+              {item}
+            </div>
+          ))}
         </div>
       </div>
 
