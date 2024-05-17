@@ -9,6 +9,7 @@ import data from "../data/data";
 import Footer from "../components/footer/Footer";
 import Modal from "../components/Modal/Modal";
 import ProductDetailsModal from "../components/ProductDetailsModal";
+import { GiHamburgerMenu } from "react-icons/gi";
 
 const Home = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -40,7 +41,7 @@ const Home = () => {
             Grimmerce
           </div>
           <div className="bg-red-900 p-2 md:p-8 w-full flex items-center justify-between gap-4">
-            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-4 md:px-8 lg:w-1/2 w-full">
+            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-4 md:px-8 lg:w-2/3 w-full">
               <FaSearch />
               <input
                 type="search"
@@ -51,7 +52,7 @@ const Home = () => {
               />
             </div>
             {/* large screensign up */}
-            <div className="hidden lg:w-1/2 text-white lg:flex lg:items-center lg:justify-end lg:gap-8">
+            <div className="hidden lg:w-1/3 text-white lg:flex lg:items-center lg:justify-end lg:gap-8">
               <div
                 className="flex items-end gap-1 cursor-pointer"
                 onClick={() => navigate("/signup")}
@@ -79,7 +80,7 @@ const Home = () => {
                     onClick={() => setToggleMenu(false)}
                   />
                 ) : (
-                  <RiMenu3Line
+                  <GiHamburgerMenu
                     color="#fff"
                     size={27}
                     onClick={() => setToggleMenu(true)}
@@ -90,14 +91,14 @@ const Home = () => {
               {toggleMenu && (
                 <div className="flex flex-col absolute bg-white top-10 rounded border-gray-800 border-[1px] text-sm">
                   <div
-                    className="flex justify-end items-center cursor-pointer py-2 px-4 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded"
+                    className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded"
                     onClick={() => navigate("/signup")}
                   >
                     <p>Signup</p>
                   </div>
 
                   <div
-                    className="flex items-center justify-end cursor-pointer py-2 px-4 hover:bg-red-50 rounded"
+                    className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded"
                     onClick={() => navigate("/login")}
                   >
                     <p>Login</p>
@@ -132,16 +133,6 @@ const Home = () => {
             borderRadius: "4px" /* Radius of the scrollbar thumb */,
           }}
         >
-          {/* 
-          
-          <div className="scrollmenu bg-gray-900 overflow-auto whitespace-nowrap">
-      <a href="#home" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">Home</a>
-      <a href="#news" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">News</a>
-      <a href="#contact" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">Contact</a>
-      <a href="#about" className="inline-block text-white text-center px-4 py-2 no-underline hover:bg-gray-700">About</a>
-      {/* Add more links here if needed 
-    </div>
-       */}
           {categories.map((item, index) => (
             <div key={index} className="cursor-pointer text-white ">
               {item}
@@ -163,7 +154,7 @@ const Home = () => {
                 <div
                   onClick={openModal}
                   key={index}
-                  className="flex flex-col border-[1px] w-fit shadow-lg p-4 items-center justify-center cursor-pointer hover:bg-gray-100"
+                  className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center justify-center cursor-pointer hover:bg-gray-100"
                 >
                   <div>
                     <img
@@ -184,7 +175,7 @@ const Home = () => {
               <div
                 onClick={openModal}
                 key={index}
-                className="flex flex-col border-[1px] w-fit shadow-lg p-4 items-center justify-center cursor-pointer hover:bg-gray-100"
+                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center justify-center cursor-pointer hover:bg-gray-100"
               >
                 <div>
                   <img
