@@ -70,172 +70,172 @@ const Dashboard = () => {
     <div className="w-full flex flex-col">
       {/* nav */}
       <nav>
-        <div className="flex items-center">
-          <div
-            className="flex items-center justify-center bg-white w-[200px] text-red-900 font-bold "
-            onClick={() => navigate("/")}
-          >
-            Grimmerce
-          </div>
-          <div className="bg-red-900 px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
-            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-2/3 w-full">
-              <FaSearch />
-              <input
-                type="search"
-                name=""
-                id=""
-                placeholder="Search item"
-                className="ml-4 pl-4 border-none outline-none w-full"
-              />
-            </div>
-            {/* large screensign up */}
-            <div className="hidden lg:w-1/3 text-white lg:flex lg:items-center lg:justify-end lg:gap-8">
-              <div className="flex flex-col items-start relative">
-                <div className="flex items-end gap-1">
-                  <FaUser color="#fff" size={20} />
-                  <p>Account</p>
-                  <div className="cursor-pointer">
-                    {toggleAcctmenu ? (
-                      <MdKeyboardArrowDown
-                        color="#fff"
-                        size={27}
-                        onClick={() => setToggleAcctMenu(false)}
-                      />
-                    ) : (
-                      <MdKeyboardArrowRight
-                        color="#fff"
-                        size={27}
-                        onClick={() => setToggleAcctMenu(true)}
-                      />
-                    )}
-                  </div>
-                </div>
-                {toggleAcctmenu && (
-                  <div className="flex flex-col absolute top-10 bg-white rounded border-gray-800 border-[1px] text-sm w-[150px] text-gray-800">
-                    <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
-                      <p className="flex items-center justify-between w-full">
-                        Profile
-                      </p>
-                      <MdKeyboardArrowRight />
-                    </div>
-                    <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
-                      <p className="flex items-center justify-between w-full">
-                        Reset Password
-                      </p>
-                      <MdKeyboardArrowRight />
-                    </div>
-                    <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
-                      <p className="flex items-center justify-between w-full">
-                        Payment Method
-                      </p>
-                      <MdKeyboardArrowRight />
-                    </div>
-                    <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
-                      <p className="flex items-center justify-between w-full">
-                        Delete Contact
-                      </p>
-                      <MdKeyboardArrowRight />
-                    </div>
-                  </div>
-                )}
-              </div>
-              <div className="flex items-end gap-1 ">
-                <div className="relative cursor-pointer">
-                  <p className="text-red-900 bg-white rounded-full h-4 w-4 p-1 absolute left-2 bottom-4 flex justify-center items-center text-xs">
-                    5
-                  </p>
-                  <FaCartFlatbed color="#fff" size={20} />
-                </div>
-                <p>Cart</p>
-              </div>
+        <div className="flex items-center bg-red-900">
+          <div className=" px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between w-full gap-2 py-2 md:py-0">
               <div
-                className="flex items-end gap-1 cursor-pointer"
-                onClick={handleLogout}
+                className="flex items-center justify-center bg-white w-[200px] text-red-900 font-bold"
+                onClick={() => navigate("/")}
               >
-                <FaSignOutAlt color="#fff" size={20} />
-                <p>Logout</p>
+                Grimmerce
               </div>
-            </div>
-
-            <div className="flex items-center gap-4 justify-end lg:hidden relative">
-              <div className="flex items-end gap-1 ">
-                <div className="relative cursor-pointer">
-                  <p className="text-red-900 bg-white rounded-full h-4 w-4 p-1 absolute left-2 bottom-4 flex justify-center items-center text-xs">
-                    5
-                  </p>
-                  <FaCartFlatbed color="#fff" size={20} />
-                </div>
+              <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-[50%] w-full mx-4">
+                <FaSearch />
+                <input
+                  type="search"
+                  placeholder="Search item"
+                  className="ml-4 pl-4 border-none outline-none w-full"
+                />
               </div>
-              <div className="cursor-pointer">
-                {toggleMenu ? (
-                  <RiCloseLine
-                    color="#fff"
-                    size={27}
-                    onClick={() => setToggleMenu(false)}
-                  />
-                ) : (
-                  <GiHamburgerMenu
-                    color="#fff"
-                    size={27}
-                    onClick={() => setToggleMenu(true)}
-                  />
-                )}
-              </div>
-
-              {toggleMenu && (
-                <div className="flex flex-col absolute top-10 bg-white rounded border-gray-800 border-[1px] text-sm w-[150px]">
-                  <div className="flex justify-between items-center cursor-pointer py-2 px-4 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
-                    <p className="flex items-center justify-between w-full">
+              {/* large screen sign up */}
+              <div className="hidden lg:flex items-start justify-end text-white gap-8">
+                <div className="flex flex-col items-start relative">
+                  <div className="flex items-center gap-1">
+                    <p className="flex items-center gap-2">
+                      <FaUser color="#fff" size={15} />
                       Account
-                      <span className="cursor-pointer">
-                        {" "}
-                        {toggleAcctmenu ? (
-                          <MdKeyboardArrowDown
-                            size={20}
-                            onClick={() => setToggleAcctMenu(false)}
-                          />
-                        ) : (
-                          <MdKeyboardArrowRight
-                            size={20}
-                            onClick={() => setToggleAcctMenu(true)}
-                          />
-                        )}
-                      </span>
                     </p>
+                    <div className=" flex items-center cursor-pointer">
+                      {toggleAcctmenu ? (
+                        <MdKeyboardArrowDown
+                          color="#fff"
+                          size={20}
+                          onClick={() => setToggleAcctMenu(false)}
+                        />
+                      ) : (
+                        <MdKeyboardArrowRight
+                          color="#fff"
+                          size={20}
+                          onClick={() => setToggleAcctMenu(true)}
+                        />
+                      )}
+                    </div>
                   </div>
                   {toggleAcctmenu && (
-                    <div>
-                      <p className="flex items-centercursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
-                        Profile
-                      </p>
-                      <p className="flex items-centercursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
-                        Reset Password
-                      </p>
-                      <p className="flex items-centercursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
-                        Payment Method
-                      </p>
-                      <p className="flex items-centercursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
-                        Delete Account
-                      </p>
+                    <div className="flex flex-col absolute top-10 bg-white rounded border-gray-800 border-[1px] text-sm w-[150px] text-gray-800">
+                      <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
+                        <p className="flex items-center justify-between w-full">
+                          Profile
+                        </p>
+                        <MdKeyboardArrowRight />
+                      </div>
+                      <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
+                        <p className="flex items-center justify-between w-full">
+                          Reset Password
+                        </p>
+                        <MdKeyboardArrowRight />
+                      </div>
+                      <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
+                        <p className="flex items-center justify-between w-full">
+                          Payment Method
+                        </p>
+                        <MdKeyboardArrowRight />
+                      </div>
+                      <div className="flex justify-between items-center cursor-pointer py-2 px-2 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
+                        <p className="flex items-center justify-between w-full">
+                          Delete Contact
+                        </p>
+                        <MdKeyboardArrowRight />
+                      </div>
                     </div>
                   )}
-                  <div
-                    className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded"
-                    onClick={handleLogout}
-                  >
-                    <p>Logout</p>
+                </div>
+                <div className="flex items-end gap-1 ">
+                  <div className="relative cursor-pointer">
+                    <p className="text-red-900 bg-white rounded-full h-4 w-4 p-1 absolute left-2 bottom-4 flex justify-center items-center text-xs">
+                      5
+                    </p>
+                    <FaCartFlatbed color="#fff" size={20} />
+                  </div>
+                  <p>Cart</p>
+                </div>
+                <div
+                  className="flex items-end gap-1 cursor-pointer"
+                  onClick={handleLogout}
+                >
+                  <FaSignOutAlt color="#fff" size={20} />
+                  <p>Logout</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-4 justify-end lg:hidden relative">
+                <div className="flex items-end gap-1 ">
+                  <div className="relative cursor-pointer">
+                    <p className="text-red-900 bg-white rounded-full h-4 w-4 p-1 absolute left-2 bottom-4 flex justify-center items-center text-xs">
+                      5
+                    </p>
+                    <FaCartFlatbed color="#fff" size={20} />
                   </div>
                 </div>
-              )}
+                <div className="cursor-pointer">
+                  {toggleMenu ? (
+                    <RiCloseLine
+                      color="#fff"
+                      size={27}
+                      onClick={() => setToggleMenu(false)}
+                    />
+                  ) : (
+                    <GiHamburgerMenu
+                      color="#fff"
+                      size={27}
+                      onClick={() => setToggleMenu(true)}
+                    />
+                  )}
+                </div>
+                {toggleMenu && (
+                  <div className="flex flex-col absolute top-10 bg-white rounded border-gray-800 border-[1px] text-sm w-[150px]">
+                    <div className="flex justify-between items-center cursor-pointer py-2 px-4 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded">
+                      <p className="flex items-center justify-between w-full">
+                        Account
+                        <span className="cursor-pointer">
+                          {toggleAcctmenu ? (
+                            <MdKeyboardArrowDown
+                              size={15}
+                              onClick={() => setToggleAcctMenu(false)}
+                            />
+                          ) : (
+                            <MdKeyboardArrowRight
+                              size={15}
+                              onClick={() => setToggleAcctMenu(true)}
+                            />
+                          )}
+                        </span>
+                      </p>
+                    </div>
+                    {toggleAcctmenu && (
+                      <div>
+                        <p className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
+                          Profile
+                        </p>
+                        <p className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
+                          Reset Password
+                        </p>
+                        <p className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
+                          Payment Method
+                        </p>
+                        <p className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded pl-6 border-b-[1px] border-b-gray-100">
+                          Delete Account
+                        </p>
+                      </div>
+                    )}
+                    <div
+                      className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded"
+                      onClick={handleLogout}
+                    >
+                      <p>Logout</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </nav>
+
       {/* end of nav */}
 
       {/* category */}
       <div className="bg-gray-800 py-2 px-4 ">
-        <div className="hidden lg:flex items-center justify-center gap-8 cursor-pointer">
+        <div className="hidden lg:flex items-center justify-center gap-8">
           {categories.map((item, index) => (
             <div key={index} className="cursor-pointer text-sm text-white">
               {item}

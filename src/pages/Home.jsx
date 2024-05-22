@@ -22,6 +22,12 @@ const Home = () => {
 
   console.log(isLogged);
 
+  const handleLogout = () => {
+    toast.warning("You are now logged out. Please log in again..");
+    localStorage.removeItem("access_token");
+    navigate("/login");
+  };
+
   const categories = [
     "Electronics",
     "Home & Kitchen",
@@ -36,79 +42,85 @@ const Home = () => {
     <div className="w-full flex flex-col">
       {/* nav */}
       <nav>
-        <div className="flex items-center">
-          <div className="flex items-center justify-center bg-white w-fit text-red-900 font-bold px-2 ">
-            Grimmerce
-          </div>
-          <div className="bg-red-900 px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
-            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-2/3 w-full">
-              <FaSearch />
-              <input
-                type="search"
-                name=""
-                id=""
-                placeholder="Search item"
-                className="ml-4 pl-4 border-none outline-none w-full "
-              />
-            </div>
-            {/* large screensign up */}
-            <div className="hidden lg:w-1/3 text-white lg:flex lg:items-center lg:justify-end lg:gap-8">
-              <div
-                className="flex items-end gap-1 cursor-pointer"
-                onClick={() => navigate("/signup")}
-              >
-                <FaRegUser color="#fff" size={20} />
-
-                <p>Signup</p>
+        <div className="flex items-center bg-red-900">
+          <div className="px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
+            <div className="flex items-center justify-between w-full gap-2 py-2 md:py-0">
+              <div className="flex items-center justify-center bg-white w-fit text-red-900 font-bold px-2 h-full">
+                Grimmerce
               </div>
-
-              <div
-                className="flex items-end gap-1 cursor-pointer"
-                onClick={() => navigate("/login")}
-              >
-                <FaSignInAlt color="#fff" size={20} />
-                <p>Login</p>
+              <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-[50%] w-full">
+                <FaSearch />
+                <input
+                  type="search"
+                  placeholder="Search Item"
+                  className="ml-4 pl-4 border-none outline-none w-full"
+                />
               </div>
-            </div>
-
-            <div className="flex items-center justify-end lg:hidden relative">
-              <div className="cursor-pointer">
-                {toggleMenu ? (
-                  <RiCloseLine
-                    color="#fff"
-                    size={27}
-                    onClick={() => setToggleMenu(false)}
-                  />
-                ) : (
-                  <GiHamburgerMenu
-                    color="#fff"
-                    size={27}
-                    onClick={() => setToggleMenu(true)}
-                  />
-                )}
-              </div>
-
-              {toggleMenu && (
-                <div className="flex flex-col absolute bg-white top-10 rounded border-gray-800 border-[1px] text-sm">
+              {/* large screen sign up */}
+              <div className="hidden lg:flex items-center justify-end text-white gap-8">
+                <div
+                  className="flex items-center gap-1 cursor-pointer"
+                  onClick={() => navigate("/signup")}
+                >
+                  <FaRegUser color="#fff" size={15} />
+                  <p>Signup</p>
+                </div>
+                {isLogged ? (
                   <div
-                    className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded"
-                    onClick={() => navigate("/signup")}
+                    className="flex items-center gap-1 cursor-pointer"
+                    onClick={handleLogout}
                   >
-                    <p>Signup</p>
+                    <FaSignInAlt color="#fff" size={15} />
+                    <p>Logout</p>
                   </div>
-
+                ) : (
                   <div
-                    className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded"
+                    className="flex items-end gap-1 cursor-pointer"
                     onClick={() => navigate("/login")}
                   >
+                    <FaSignInAlt color="#fff" size={20} />
                     <p>Login</p>
                   </div>
+                )}
+              </div>
+              <div className="flex items-center justify-end lg:hidden relative">
+                <div className="cursor-pointer">
+                  {toggleMenu ? (
+                    <RiCloseLine
+                      color="#fff"
+                      size={27}
+                      onClick={() => setToggleMenu(false)}
+                    />
+                  ) : (
+                    <GiHamburgerMenu
+                      color="#fff"
+                      size={27}
+                      onClick={() => setToggleMenu(true)}
+                    />
+                  )}
                 </div>
-              )}
+                {toggleMenu && (
+                  <div className="flex flex-col absolute bg-white top-10 rounded border-gray-800 border-[1px] text-sm">
+                    <div
+                      className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 border-b-[1px] border-b-gray-200 rounded"
+                      onClick={() => navigate("/signup")}
+                    >
+                      <p>Signup</p>
+                    </div>
+                    <div
+                      className="flex items-center cursor-pointer py-2 px-4 hover:bg-red-50 rounded"
+                      onClick={() => navigate("/login")}
+                    >
+                      <p>Login</p>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
         </div>
       </nav>
+
       {/* end of nav */}
 
       {/* category */}
