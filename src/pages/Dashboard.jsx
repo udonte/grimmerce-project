@@ -77,8 +77,8 @@ const Dashboard = () => {
           >
             Grimmerce
           </div>
-          <div className="bg-red-900 p-2 md:p-8 w-full flex items-center justify-between gap-4">
-            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-4 md:px-8 lg:w-2/3 w-full">
+          <div className="bg-red-900 px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
+            <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-2/3 w-full">
               <FaSearch />
               <input
                 type="search"
@@ -237,7 +237,7 @@ const Dashboard = () => {
       <div className="bg-gray-800 py-2 px-4 ">
         <div className="hidden lg:flex items-center justify-center gap-8 cursor-pointer">
           {categories.map((item, index) => (
-            <div key={index} className="cursor-pointer text-xl text-white">
+            <div key={index} className="cursor-pointer text-sm text-white">
               {item}
             </div>
           ))}
