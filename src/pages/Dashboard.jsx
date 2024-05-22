@@ -74,7 +74,7 @@ const Dashboard = () => {
           <div className=" px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
             <div className="flex items-center justify-between w-full gap-2 py-2 md:py-0">
               <div
-                className="flex items-center justify-center bg-white w-[200px] text-red-900 font-bold"
+                className="flex items-center justify-center bg-white w-fit text-red-900 font-bold cursor-pointer"
                 onClick={() => navigate("/")}
               >
                 Grimmerce

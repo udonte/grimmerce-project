@@ -45,7 +45,7 @@ const Home = () => {
         <div className="flex items-center bg-red-900">
           <div className="px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
             <div className="flex items-center justify-between w-full gap-2 py-2 md:py-0">
-              <div className="flex items-center justify-center bg-white w-fit text-red-900 font-bold px-2 h-full">
+              <div className="flex items-center justify-center bg-white w-fit text-red-900 font-bold px-2 cursor-pointer">
                 Grimmerce
               </div>
               <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-[50%] w-full">
@@ -58,13 +58,6 @@ const Home = () => {
               </div>
               {/* large screen sign up */}
               <div className="hidden lg:flex items-center justify-end text-white gap-8">
-                <div
-                  className="flex items-center gap-1 cursor-pointer"
-                  onClick={() => navigate("/signup")}
-                >
-                  <FaRegUser color="#fff" size={15} />
-                  <p>Signup</p>
-                </div>
                 {isLogged ? (
                   <div
                     className="flex items-center gap-1 cursor-pointer"
@@ -74,12 +67,21 @@ const Home = () => {
                     <p>Logout</p>
                   </div>
                 ) : (
-                  <div
-                    className="flex items-end gap-1 cursor-pointer"
-                    onClick={() => navigate("/login")}
-                  >
-                    <FaSignInAlt color="#fff" size={20} />
-                    <p>Login</p>
+                  <div className="flex items-center gap-8">
+                    <div
+                      className="flex items-end gap-1 cursor-pointer"
+                      onClick={() => navigate("/login")}
+                    >
+                      <FaSignInAlt color="#fff" size={20} />
+                      <p>Login</p>
+                    </div>
+                    <div
+                      className="flex items-center gap-1 cursor-pointer"
+                      onClick={() => navigate("/signup")}
+                    >
+                      <FaRegUser color="#fff" size={15} />
+                      <p>Signup</p>
+                    </div>
                   </div>
                 )}
               </div>
