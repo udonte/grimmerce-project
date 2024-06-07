@@ -10,6 +10,7 @@ import Footer from "../components/footer/Footer";
 import Modal from "../components/Modal/Modal";
 import ProductDetailsModal from "../components/ProductDetailsModal";
 import { GiHamburgerMenu } from "react-icons/gi";
+import axiosInstance from "../helperFunctions/axios.utlil";
 
 const Home = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -17,10 +18,31 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
+  const [products, setProducts] = useState([]);
+  const [singleProduct, setSingleProduct] = useState({});
+
+  const getProducts = async () => {
+    try {
+      const response = await axiosInstance.get("product");
+      console.log(response);
+      const fetchedProducts = response.data.data.data;
+      setProducts(fetchedProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleProductClick = (product) => {
+    setSingleProduct(product);
+    openModal();
+  };
+
+  // get product and their categories
+  useEffect(() => {
+    getProducts();
+  }, []);
 
   const isLogged = localStorage.getItem("access_token") ? true : false;
-
-  console.log(isLogged);
 
   const handleLogout = () => {
     toast.warning("You are now logged out. Please log in again..");
@@ -30,14 +52,17 @@ const Home = () => {
 
   const categories = [
     "Electronics",
-    "Home & Kitchen",
-    "Accessories",
-    "Fitness & Health",
-    "Appliances",
-    "Decorations",
-    "Men Wear",
-    "Baby Toys",
+    "Home Appliances",
+    "Fashion",
+    "Beauty & Personal Care",
+    "Sports & Outdoors",
+    "Books",
+    "Toys & Games",
+    "Health & Wellness",
+    "Automotive",
+    "Furniture & Home Decor",
   ];
+
   return (
     <div className="w-full flex flex-col">
       {/* nav */}
@@ -162,43 +187,69 @@ const Home = () => {
             Top Selling Products
           </p>
           <div className="grid grid-cols-2 gap-4 md:grid md:grid-cols-4 md:gap-4">
-            {data
-              .slice(0, 4)
-              .map(({ product_name, description, image, status }, index) => (
-                <div
-                  onClick={openModal}
-                  key={index}
-                  className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center justify-center cursor-pointer hover:bg-gray-100"
-                >
-                  <div>
+            {products.slice(0, 4).map((product, index) => (
+              <div
+                onClick={() => handleProductClick(product)}
+                key={index}
+                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
+              >
+                <div className="flex flex-col">
+                  <div style={{ width: "200px", height: "200px" }}>
                     <img
-                      src={Cloth1}
-                      alt={product_name}
+                      src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+                      alt={product.name}
                       className="w-full h-auto"
                     />
                   </div>
-                  <p className="text-align text-sm py-2">{product_name}</p>
+                  <div>
+                    <p className="text-align text-sm py-2 font-bold">
+                      {product.name}
+                    </p>
+                    <div className="flex items-center justify-between w-full">
+                      <p>{product.brand}</p>
+                      <p className="text-red-500">₦{product.amount}</p>
+                    </div>
+                    <div className="flex flex-col text-xs w-full mt-2">
+                      <div className="text-green-700">Available</div>
+                      <div className="">{product.category}</div>
+                    </div>
+                  </div>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </div>
         <div className="mb-8">
           <p className="py-2 text-xl font-bold text-center">All Products</p>
           <div className="grid grid-cols-2 gap-4 md:grid md:grid-cols-4 md:gap-4">
-            {data.map(({ product_name, description, image, status }, index) => (
+            {products.map((product, index) => (
               <div
-                onClick={openModal}
+                onClick={() => handleProductClick(product)}
                 key={index}
-                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center justify-center cursor-pointer hover:bg-gray-100"
+                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
               >
-                <div>
-                  <img
-                    src={Cloth1}
-                    alt={product_name}
-                    className="w-full h-auto"
-                  />
+                <div className="flex flex-col">
+                  <div style={{ width: "200px", height: "200px" }}>
+                    <img
+                      src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+                      alt={product.name}
+                      className="w-full h-auto"
+                    />
+                  </div>
+                  <div>
+                    <p className="text-align text-sm py-2 font-bold">
+                      {product.name}
+                    </p>
+                    <div className="flex items-center justify-between w-full">
+                      <p>{product.brand}</p>
+                      <p className="text-red-500">₦{product.amount}</p>
+                    </div>
+                    <div className="flex flex-col text-xs w-full mt-2">
+                      <div className="text-green-700">Available</div>
+                      <div className="">{product.category}</div>
+                    </div>
+                  </div>
                 </div>
-                <p className="text-align text-sm py-2">{product_name}</p>
               </div>
             ))}
           </div>
@@ -206,6 +257,7 @@ const Home = () => {
       </div>
       <Footer />
       <ProductDetailsModal
+        product={singleProduct}
         isOpen={isModalOpen}
         onClose={closeModal}
         isLogged={isLogged}

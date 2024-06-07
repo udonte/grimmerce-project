@@ -26,7 +26,10 @@ const LogIn = () => {
       toast.success("Login successful");
       //use effect to check if token is in the local storage
       localStorage.setItem("access_token", `${response.data.data.accessToken}`);
-      navigate("/dashboard", { state: response.data.data });
+      console.log(response.data.data);
+      response.data.data.userType === "seller"
+        ? navigate("/admin")
+        : navigate("/dashboard", { state: response.data.data });
     } catch (error) {
       setIsLoading(false);
       toast.error(error.response.data.message);
