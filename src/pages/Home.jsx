@@ -193,12 +193,15 @@ const Home = () => {
                 key={index}
                 className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
               >
-                <div className="flex flex-col">
-                  <div style={{ width: "200px", height: "200px" }}>
+                <div className="flex flex-col overflow-hidden">
+                  <div
+                    style={{ width: "200px", height: "200px" }}
+                    className="overflow-hidden"
+                  >
                     <img
                       src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
                       alt={product.name}
-                      className="w-full h-auto"
+                      className="w-full"
                     />
                   </div>
                   <div>
@@ -228,12 +231,15 @@ const Home = () => {
                 key={index}
                 className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
               >
-                <div className="flex flex-col">
-                  <div style={{ width: "200px", height: "200px" }}>
+                <div className="flex flex-col ">
+                  <div
+                    style={{ width: "200px", height: "200px" }}
+                    className="overflow-hidden"
+                  >
                     <img
                       src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
                       alt={product.name}
-                      className="w-full h-auto"
+                      className="w-full"
                     />
                   </div>
                   <div>

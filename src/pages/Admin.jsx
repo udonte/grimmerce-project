@@ -7,11 +7,13 @@ import axiosInstance from "../helperFunctions/axios.utlil";
 import Spinner from "../components/Spinner/Spinner";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
+import CurrencyFormat from "react-currency-format";
 
 const Admin = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [imageFilename, setImageFilename] = useState("");
+  const CurrencyFormat = require("react-currency-format");
 
   const {
     register,
@@ -62,7 +64,7 @@ const Admin = () => {
       const response = await axiosInstance.post("product", productData);
       console.log(response.data.data);
       toast.success("Product Created");
-      navigate("/");
+      navigate("/admin");
     } catch (error) {
       toast.error(error.response?.data?.message || "Product creation failed");
     } finally {
