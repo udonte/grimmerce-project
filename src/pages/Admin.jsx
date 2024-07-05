@@ -13,7 +13,6 @@ const Admin = () => {
   const navigate = useNavigate();
   const [isLoading, setIsLoading] = useState(false);
   const [imageFilename, setImageFilename] = useState("");
-  const CurrencyFormat = require("react-currency-format");
 
   const {
     register,

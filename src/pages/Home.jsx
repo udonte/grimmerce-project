@@ -1,16 +1,12 @@
 import React, { useEffect, useState } from "react";
-import Button from "../components/Button";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaRegUser, FaSearch, FaSignInAlt } from "react-icons/fa";
-import { RiCloseLine, RiMenu3Line } from "react-icons/ri";
-import Cloth1 from "../assets/images/img (1).jpg";
-import data from "../data/data";
-import Footer from "../components/footer/Footer";
-import Modal from "../components/Modal/Modal";
-import ProductDetailsModal from "../components/ProductDetailsModal";
+import { RiCloseLine } from "react-icons/ri";
 import { GiHamburgerMenu } from "react-icons/gi";
 import axiosInstance from "../helperFunctions/axios.utlil";
+import Footer from "../components/footer/Footer";
+import ProductDetailsModal from "../components/ProductDetailsModal";
 
 const Home = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -19,16 +15,42 @@ const Home = () => {
   const openModal = () => setIsModalOpen(true);
   const closeModal = () => setIsModalOpen(false);
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
   const [singleProduct, setSingleProduct] = useState({});
+  const [currentCategory, setCurrentCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isCategoryEmpty, setIsCategoryEmpty] = useState(false);
 
   const getProducts = async () => {
     try {
       const response = await axiosInstance.get("product");
-      console.log(response);
       const fetchedProducts = response.data.data.data;
       setProducts(fetchedProducts);
+      console.log(fetchedProducts);
+      setFilteredProducts(fetchedProducts);
     } catch (error) {
       console.log(error);
+    }
+  };
+
+  const getFilteredProducts = async (category) => {
+    try {
+      const response = await axiosInstance.get(`product?category=${category}`);
+      const fetchedProducts = response.data.data.data;
+      setIsCategoryEmpty(fetchedProducts.length === 0);
+      setFilteredProducts(fetchedProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCategoryClick = (category) => {
+    setCurrentCategory(category);
+    if (category === "All") {
+      setFilteredProducts(products);
+      setIsCategoryEmpty(false);
+    } else {
+      getFilteredProducts(category);
     }
   };
 
@@ -37,9 +59,12 @@ const Home = () => {
     openModal();
   };
 
-  // get product and their categories
   useEffect(() => {
-    getProducts();
+    if (isLogged) {
+      navigate("/dashboard");
+    } else {
+      getProducts();
+    }
   }, []);
 
   const isLogged = localStorage.getItem("access_token") ? true : false;
@@ -50,7 +75,21 @@ const Home = () => {
     navigate("/login");
   };
 
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.trim() === "") {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter((product) =>
+        product.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+      setIsCategoryEmpty(filtered.length === 0);
+    }
+  };
   const categories = [
+    "All",
     "Electronics",
     "Home Appliances",
     "Fashion",
@@ -70,7 +109,10 @@ const Home = () => {
         <div className="flex items-center bg-red-900">
           <div className="px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
             <div className="flex items-center justify-between w-full gap-2 py-2 md:py-0">
-              <div className="flex items-center justify-center bg-white w-fit text-red-900 font-bold px-2 cursor-pointer">
+              <div
+                className="flex items-center justify-center bg-white w-fit text-red-900 font-bold px-2 cursor-pointer"
+                onClick={() => navigate("/")}
+              >
                 Grimmerce
               </div>
               <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-[50%] w-full">
@@ -78,7 +120,9 @@ const Home = () => {
                 <input
                   type="search"
                   placeholder="Search Item"
+                  value={searchQuery}
                   className="ml-4 pl-4 border-none outline-none w-full"
+                  onChange={handleSearch}
                 />
               </div>
               {/* large screen sign up */}
@@ -154,7 +198,13 @@ const Home = () => {
       <div className="bg-gray-800 py-1 px-2 ">
         <div className="hidden lg:flex items-center justify-center gap-8">
           {categories.map((item, index) => (
-            <div key={index} className="cursor-pointer text-sm text-white">
+            <div
+              key={index}
+              className={`cursor-pointer text-sm text-white ${
+                currentCategory === item ? "font-bold underline" : ""
+              }`}
+              onClick={() => handleCategoryClick(item)}
+            >
               {item}
             </div>
           ))}
@@ -173,7 +223,13 @@ const Home = () => {
           }}
         >
           {categories.map((item, index) => (
-            <div key={index} className="cursor-pointer text-white ">
+            <div
+              key={index}
+              className={`cursor-pointer text-white ${
+                currentCategory === item ? "font-bold underline" : ""
+              }`}
+              onClick={() => handleCategoryClick(item)}
+            >
               {item}
             </div>
           ))}
@@ -181,85 +237,98 @@ const Home = () => {
       </div>
 
       {/* main page */}
-      <div className="px-12 py-8">
-        <div className="mb-8">
-          <p className="py-2 text-xl font-bold text-center">
-            Top Selling Products
-          </p>
-          <div className="grid grid-cols-2 gap-4 md:grid md:grid-cols-4 md:gap-4">
-            {products.slice(0, 4).map((product, index) => (
-              <div
-                onClick={() => handleProductClick(product)}
-                key={index}
-                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex flex-col overflow-hidden">
-                  <div
-                    style={{ width: "200px", height: "200px" }}
-                    className="overflow-hidden"
-                  >
-                    <img
-                      src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
-                      alt={product.name}
-                      className="w-full"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-align text-sm py-2 font-bold">
-                      {product.name}
-                    </p>
-                    <div className="flex items-center justify-between w-full">
-                      <p>{product.brand}</p>
-                      <p className="text-red-500">₦{product.amount}</p>
-                    </div>
-                    <div className="flex flex-col text-xs w-full mt-2">
-                      <div className="text-green-700">Available</div>
-                      <div className="">{product.category}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+      <div className="px-4 md:px-8 lg:px-12 py-8">
+        {isCategoryEmpty ? (
+          <div className="h-screen text-center font-bodl">
+            <p className="text-xl text-red-500">
+              No products available in this category.
+            </p>
+            <p>Click another category</p>
           </div>
-        </div>
-        <div className="mb-8">
-          <p className="py-2 text-xl font-bold text-center">All Products</p>
-          <div className="grid grid-cols-2 gap-4 md:grid md:grid-cols-4 md:gap-4">
-            {products.map((product, index) => (
-              <div
-                onClick={() => handleProductClick(product)}
-                key={index}
-                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex flex-col ">
+        ) : (
+          <>
+            <div className="mb-8">
+              <p className="py-2 text-xl font-bold text-center mb-4">
+                Top Selling Products
+              </p>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                {filteredProducts.slice(0, 4).map((product, index) => (
                   <div
-                    style={{ width: "200px", height: "200px" }}
-                    className="overflow-hidden"
+                    onClick={() => handleProductClick(product)}
+                    key={index}
+                    className="flex flex-col border-[1px] w-full rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100 relative overflow-hidden"
                   >
-                    <img
-                      src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
-                      alt={product.name}
-                      className="w-full"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-align text-sm py-2 font-bold">
-                      {product.name}
-                    </p>
-                    <div className="flex items-center justify-between w-full">
-                      <p>{product.brand}</p>
-                      <p className="text-red-500">₦{product.amount}</p>
+                    <div className="rounded-full h-14 w-14 bg-red-900/20 absolute left-[-28px] top-[-40px] "></div>
+                    <div className="rounded-full h-32 w-32 bg-red-900/20 absolute bottom-[-110px] right-[-80px] "></div>
+                    <div className="flex flex-col overflow-hidden">
+                      <div className="w-full h-48 md:h-36 lg:h-48 overflow-hidden">
+                        <img
+                          src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </div>
-                    <div className="flex flex-col text-xs w-full mt-2">
-                      <div className="text-green-700">Available</div>
-                      <div className="">{product.category}</div>
+                    <div className="w-full">
+                      <p className="text-center text-sm py-2 font-bold">
+                        {product.name}
+                      </p>
+                      <div className="flex items-center justify-between w-full">
+                        <p>{product.brand}</p>
+                        <p className="text-red-500">₦{product.amount}</p>
+                      </div>
+                      <div className="flex items-center justify-between text-xs w-full mt-2">
+                        <div className="">{product.category}</div>
+                        <div className="text-green-700">Available</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+            <div className="mb-8">
+              <p className="py-2 text-xl font-bold text-center mb-4">
+                All Products
+              </p>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                {filteredProducts.map((product, index) => (
+                  <div
+                    onClick={() => handleProductClick(product)}
+                    key={index}
+                    className="flex flex-col border-[1px] w-full rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100 relative overflow-hidden"
+                  >
+                    <div className="rounded-full h-14 w-14 bg-red-900/20 absolute left-[-28px] top-[-40px] "></div>
+                    <div className="rounded-full h-32 w-32 bg-red-900/20 absolute bottom-[-110px] right-[-80px] "></div>
+                    <div className="flex flex-col overflow-hidden">
+                      <div className="w-full h-48 md:h-36 lg:h-48 overflow-hidden">
+                        <img
+                          src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="w-full">
+                      <p className="text-center text-sm py-2 font-bold">
+                        {product.name}
+                      </p>
+                      <div className="flex items-center justify-between w-full">
+                        <p>{product.brand}</p>
+                        <p className="font-medium text-red-500">
+                          ₦{product.amount}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between text-xs w-full mt-2">
+                        <div className="">{product.category}</div>
+                        <div className="text-green-700">Available</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
       <Footer />
       <ProductDetailsModal

@@ -26,38 +26,72 @@ import { RiCloseLine, RiDeleteBack2Fill, RiMenu3Line } from "react-icons/ri";
 import ProductDetailsModal from "../components/ProductDetailsModal";
 import { GiHamburgerMenu } from "react-icons/gi";
 import axiosInstance from "../helperFunctions/axios.utlil";
+import CartModal from "../components/CartModal";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isProductModalOpen, setIsProductModalOpen] = useState(false);
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleAcctmenu, setToggleAcctMenu] = useState(false);
-  const [singleProduct, setSingleProduct] = useState({});
   const [products, setProducts] = useState([]);
+  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [singleProduct, setSingleProduct] = useState({});
+  const [currentCategory, setCurrentCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [isCategoryEmpty, setIsCategoryEmpty] = useState(false);
 
   const getProducts = async () => {
     try {
       const response = await axiosInstance.get("product");
-      console.log(response);
       const fetchedProducts = response.data.data.data;
       setProducts(fetchedProducts);
+      console.log(fetchedProducts);
+      setFilteredProducts(fetchedProducts);
     } catch (error) {
       console.log(error);
     }
   };
 
+  const getFilteredProducts = async (category) => {
+    try {
+      const response = await axiosInstance.get(`product?category=${category}`);
+      const fetchedProducts = response.data.data.data;
+      setIsCategoryEmpty(fetchedProducts.length === 0);
+      setFilteredProducts(fetchedProducts);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleCategoryClick = (category) => {
+    setCurrentCategory(category);
+    if (category === "All") {
+      setFilteredProducts(products);
+      setIsCategoryEmpty(false);
+    } else {
+      getFilteredProducts(category);
+    }
+  };
+
+  const handleAddtoCartClick = () => {
+    openCartModal();
+  };
+
+  const handleProductClick = (product) => {
+    setSingleProduct(product);
+    openProductModal();
+  };
+
   useEffect(() => {
     getProducts();
   }, []);
-  const handleProductClick = (product) => {
-    setSingleProduct(product);
-    openModal();
-  };
 
-  const openModal = () => setIsModalOpen(true);
-  const closeModal = () => setIsModalOpen(false);
+  const openProductModal = () => setIsProductModalOpen(true);
+  const closeProductModal = () => setIsProductModalOpen(false);
+  const openCartModal = () => setIsCartModalOpen(true);
+  const closeCartModal = () => setIsCartModalOpen(false);
 
   // Check if state exist before accessing them
   const firstName = state?.firstName; //
@@ -78,24 +112,89 @@ const Dashboard = () => {
     navigate("/login");
   };
 
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.trim() === "") {
+      setFilteredProducts(products);
+    } else {
+      const filtered = products.filter((product) =>
+        product.name.toLowerCase().includes(query.toLowerCase())
+      );
+      setFilteredProducts(filtered);
+      setIsCategoryEmpty(filtered.length === 0);
+    }
+  };
+
   const categories = [
-    "Electronics",
-    "Home Appliances",
-    "Fashion",
-    "Beauty & Personal Care",
-    "Sports & Outdoors",
-    "Books",
-    "Toys & Games",
-    "Health & Wellness",
-    "Automotive",
-    "Furniture & Home Decor",
+    {
+      id: 1,
+      name: "All",
+      value: "all",
+    },
+    {
+      id: 2,
+      name: "Electronics",
+      value: "electronics",
+    },
+    {
+      id: 3,
+      name: "Home Appliances",
+      value: "home_appliances",
+    },
+    {
+      id: 4,
+      name: "Fashion",
+      value: "fashion",
+    },
+    {
+      id: 5,
+      name: "Beauty & Personal Care",
+      value: "beauty_personal_care",
+    },
+
+    {
+      id: 6,
+      name: "Sports & Outdoors",
+      value: "sports_outdoors",
+    },
+
+    {
+      id: 7,
+      name: "Books",
+      value: "books",
+    },
+    {
+      id: 8,
+      name: "Toys & Games",
+      value: "toys_games",
+    },
+
+    {
+      id: 9,
+      name: " Health & Wellness",
+      value: "health_wellness",
+    },
+    {
+      id: 10,
+      name: "Automotive",
+      value: "automotive",
+    },
+
+    {
+      id: 11,
+      name: "Furniture & Home Decor",
+      value: "furniture_home_decor",
+    },
   ];
 
   return (
     <div className="w-full flex flex-col">
+      {/* nav */}
       <nav>
         <div className="flex items-center bg-red-900">
           <div className=" px-2 md:px-8 md:py-4 w-full flex items-center justify-between gap-4">
+            {/* nav */}
             <div className="flex items-center justify-between w-full gap-2 py-2 md:py-0">
               <div
                 className="flex items-center justify-center bg-white w-fit text-red-900 font-bold cursor-pointer"
@@ -103,12 +202,14 @@ const Dashboard = () => {
               >
                 Grimmerce
               </div>
-              <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-[50%] w-full mx-4">
+              <div className="flex items-center bg-white rounded-md py-1 px-2 md:py-2 md:px-8 lg:w-[50%] w-full">
                 <FaSearch />
                 <input
                   type="search"
-                  placeholder="Search item"
+                  placeholder="Search Item"
+                  value={searchQuery}
                   className="ml-4 pl-4 border-none outline-none w-full"
+                  onChange={handleSearch}
                 />
               </div>
               {/* large screen sign up */}
@@ -164,8 +265,11 @@ const Dashboard = () => {
                     </div>
                   )}
                 </div>
-                <div className="flex items-end gap-1 ">
-                  <div className="relative cursor-pointer">
+                <div
+                  className="flex items-end gap-1 cursor-pointer"
+                  onClick={handleAddtoCartClick}
+                >
+                  <div className="relative ">
                     <p className="text-red-900 bg-white rounded-full h-4 w-4 p-1 absolute left-2 bottom-4 flex justify-center items-center text-xs">
                       5
                     </p>
@@ -258,14 +362,21 @@ const Dashboard = () => {
       {/* end of nav */}
 
       {/* category */}
-      <div className="bg-gray-800 py-2 px-4 ">
+      <div className="bg-gray-800 py-1 px-2 ">
         <div className="hidden lg:flex items-center justify-center gap-8">
-          {categories.map((item, index) => (
-            <div key={index} className="cursor-pointer text-sm text-white">
-              {item}
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className={`cursor-pointer text-sm text-white ${
+                currentCategory === category.name ? "font-bold underline" : ""
+              }`}
+              onClick={() => handleCategoryClick(category.value)}
+            >
+              {category.name}
             </div>
           ))}
         </div>
+
         <div
           className="lg:hidden text-white text-xs flex items-center justify-center gap-8 overflow-x-auto max-w-full whitespace-nowrap px-4"
           style={{
@@ -278,102 +389,122 @@ const Dashboard = () => {
             borderRadius: "4px" /* Radius of the scrollbar thumb */,
           }}
         >
-          {categories.map((item, index) => (
-            <div key={index} className="cursor-pointer text-white ">
-              {item}
+          {categories.map((category) => (
+            <div
+              key={category.id}
+              className={`cursor-pointer text-white ${
+                currentCategory === category.name ? "font-bold underline" : ""
+              }`}
+              onClick={() => handleCategoryClick(category.value)}
+            >
+              {category.name}
             </div>
           ))}
         </div>
       </div>
 
       {/* main page */}
-      <div className="px-12 py-8">
-        <div className="mb-8">
-          <p className="py-2 text-xl font-bold text-center">
-            Top Selling Products
-          </p>
-          <div className="grid grid-cols-2 gap-4 md:grid md:grid-cols-4 md:gap-4">
-            {products.slice(0, 4).map((product, index) => (
-              <div
-                onClick={() => handleProductClick(product)}
-                key={index}
-                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex flex-col">
-                  <div
-                    style={{ width: "200px", height: "200px" }}
-                    className="overflow-hidden"
-                  >
-                    <img
-                      src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
-                      alt={product.name}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-align text-sm py-2 font-bold">
-                      {product.name}
-                    </p>
-                    <div className="flex items-center justify-between w-full">
-                      <p>{product.brand}</p>
-                      <p className="text-red-500">₦{product.amount}</p>
-                    </div>
-                    <div className="flex flex-col text-xs w-full mt-2">
-                      <div className="text-green-700">Available</div>
-                      <div className="">{product.category}</div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            ))}
+      <div className="px-4 md:px-8 lg:px-12 py-8">
+        {isCategoryEmpty ? (
+          <div className="h-screen text-center font-bodl">
+            <p className="text-xl text-red-500">
+              No products available in this category.
+            </p>
+            <p>Click another category</p>
           </div>
-        </div>
-        <div className="mb-8">
-          <p className="py-2 text-xl font-bold text-center">All Products</p>
-          <div className="grid grid-cols-2 gap-4 md:grid md:grid-cols-4 md:gap-4">
-            {products.map((product, index) => (
-              <div
-                onClick={() => handleProductClick(product)}
-                key={index}
-                className="flex flex-col border-[1px] w-fit rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100"
-              >
-                <div className="flex flex-col">
+        ) : (
+          <>
+            <div className="mb-8">
+              <p className="py-2 text-xl font-bold text-center mb-4">
+                Top Selling Products
+              </p>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                {filteredProducts.slice(0, 4).map((product, index) => (
                   <div
-                    style={{ width: "200px", height: "200px" }}
-                    className="overflow-hidden"
+                    onClick={() => handleProductClick(product)}
+                    key={index}
+                    className="flex flex-col border-[1px] w-full rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100 relative overflow-hidden"
                   >
-                    <img
-                      src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
-                      alt={product.name}
-                      className="w-full h-auto"
-                    />
-                  </div>
-                  <div>
-                    <p className="text-align text-sm py-2 font-bold">
-                      {product.name}
-                    </p>
-                    <div className="flex items-center justify-between w-full">
-                      <p>{product.brand}</p>
-                      <p className="text-red-500">₦{product.amount}</p>
+                    <div className="rounded-full h-14 w-14 bg-red-900/20 absolute left-[-28px] top-[-40px] "></div>
+                    <div className="rounded-full h-32 w-32 bg-red-900/20 absolute bottom-[-110px] right-[-80px] "></div>
+                    <div className="flex flex-col overflow-hidden">
+                      <div className="w-full h-48 md:h-36 lg:h-48 overflow-hidden">
+                        <img
+                          src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
                     </div>
-                    <div className="flex flex-col text-xs w-full mt-2">
-                      <div className="text-green-700">Available</div>
-                      <div className="">{product.category}</div>
+                    <div className="w-full">
+                      <p className="text-center text-sm py-2 font-bold">
+                        {product.name}
+                      </p>
+                      <div className="flex items-center justify-between w-full">
+                        <p>{product.brand}</p>
+                        <p className="text-red-500">₦{product.amount}</p>
+                      </div>
+                      <div className="flex items-center justify-between text-xs w-full mt-2">
+                        <div className="">{product.category.name}</div>
+                        <div className="text-green-700">Available</div>
+                      </div>
                     </div>
                   </div>
-                </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
+            </div>
+            <div className="mb-8">
+              <p className="py-2 text-xl font-bold text-center mb-4">
+                All Products
+              </p>
+              <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
+                {filteredProducts.map((product, index) => (
+                  <div
+                    onClick={() => handleProductClick(product)}
+                    key={index}
+                    className="flex flex-col border-[1px] w-full rounded-md shadow-lg p-4 items-center cursor-pointer hover:bg-gray-100 relative overflow-hidden"
+                  >
+                    <div className="rounded-full h-14 w-14 bg-red-900/20 absolute left-[-28px] top-[-40px] "></div>
+                    <div className="rounded-full h-32 w-32 bg-red-900/20 absolute bottom-[-110px] right-[-80px] "></div>
+                    <div className="flex flex-col overflow-hidden">
+                      <div className="w-full h-48 md:h-36 lg:h-48 overflow-hidden">
+                        <img
+                          src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+                          alt={product.name}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    </div>
+                    <div className="w-full">
+                      <p className="text-center text-sm py-2 font-bold">
+                        {product.name}
+                      </p>
+                      <div className="flex items-center justify-between w-full">
+                        <p>{product.brand}</p>
+                        <p className="font-medium text-red-500">
+                          ₦{product.amount}
+                        </p>
+                      </div>
+                      <div className="flex items-center justify-between text-xs w-full mt-2">
+                        <div className="">{product.category.name}</div>
+                        <div className="text-green-700">Available</div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </>
+        )}
       </div>
       <Footer />
       <ProductDetailsModal
         product={singleProduct}
-        isOpen={isModalOpen}
-        onClose={closeModal}
+        isOpen={isProductModalOpen}
+        onClose={closeProductModal}
         isLogged={isLogged}
       />
+      <CartModal isOpen={isCartModalOpen} onClose={closeCartModal} />
     </div>
   );
 };
