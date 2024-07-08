@@ -89,17 +89,65 @@ const Home = () => {
     }
   };
   const categories = [
-    "All",
-    "Electronics",
-    "Home Appliances",
-    "Fashion",
-    "Beauty & Personal Care",
-    "Sports & Outdoors",
-    "Books",
-    "Toys & Games",
-    "Health & Wellness",
-    "Automotive",
-    "Furniture & Home Decor",
+    {
+      id: 1,
+      name: "All",
+      value: "all",
+    },
+    {
+      id: 2,
+      name: "Electronics",
+      value: "electronics",
+    },
+    {
+      id: 3,
+      name: "Home Appliances",
+      value: "home_appliances",
+    },
+    {
+      id: 4,
+      name: "Fashion",
+      value: "fashion",
+    },
+    {
+      id: 5,
+      name: "Beauty & Personal Care",
+      value: "beauty_personal_care",
+    },
+
+    {
+      id: 6,
+      name: "Sports & Outdoors",
+      value: "sports_outdoors",
+    },
+
+    {
+      id: 7,
+      name: "Books",
+      value: "books",
+    },
+    {
+      id: 8,
+      name: "Toys & Games",
+      value: "toys_games",
+    },
+
+    {
+      id: 9,
+      name: " Health & Wellness",
+      value: "health_wellness",
+    },
+    {
+      id: 10,
+      name: "Automotive",
+      value: "automotive",
+    },
+
+    {
+      id: 11,
+      name: "Furniture & Home Decor",
+      value: "furniture_home_decor",
+    },
   ];
 
   return (
@@ -197,15 +245,15 @@ const Home = () => {
       {/* category */}
       <div className="bg-gray-800 py-1 px-2 ">
         <div className="hidden lg:flex items-center justify-center gap-8">
-          {categories.map((item, index) => (
+          {categories.map((category) => (
             <div
-              key={index}
+              key={category.id}
               className={`cursor-pointer text-sm text-white ${
-                currentCategory === item ? "font-bold underline" : ""
+                currentCategory === category.name ? "font-bold underline" : ""
               }`}
-              onClick={() => handleCategoryClick(item)}
+              onClick={() => handleCategoryClick(category.value)}
             >
-              {item}
+              {category.name}
             </div>
           ))}
         </div>
@@ -222,15 +270,15 @@ const Home = () => {
             borderRadius: "4px" /* Radius of the scrollbar thumb */,
           }}
         >
-          {categories.map((item, index) => (
+          {categories.map((category) => (
             <div
-              key={index}
+              key={category.id}
               className={`cursor-pointer text-white ${
-                currentCategory === item ? "font-bold underline" : ""
+                currentCategory === category.name ? "font-bold underline" : ""
               }`}
-              onClick={() => handleCategoryClick(item)}
+              onClick={() => handleCategoryClick(category.value)}
             >
-              {item}
+              {category.name}
             </div>
           ))}
         </div>
@@ -278,7 +326,7 @@ const Home = () => {
                         <p className="text-red-500">₦{product.amount}</p>
                       </div>
                       <div className="flex items-center justify-between text-xs w-full mt-2">
-                        <div className="">{product.category}</div>
+                        <div className="">{product.category.name}</div>
                         <div className="text-green-700">Available</div>
                       </div>
                     </div>
@@ -319,7 +367,7 @@ const Home = () => {
                         </p>
                       </div>
                       <div className="flex items-center justify-between text-xs w-full mt-2">
-                        <div className="">{product.category}</div>
+                        <div className="">{product.category.name}</div>
                         <div className="text-green-700">Available</div>
                       </div>
                     </div>
