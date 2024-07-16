@@ -29,6 +29,7 @@ import axiosInstance from "../helperFunctions/axios.utlil";
 import CartModal from "../components/CartModal";
 
 const Dashboard = () => {
+  const userToken = localStorage.getItem("access_token");
   const navigate = useNavigate();
   const { state } = useLocation();
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
@@ -41,7 +42,9 @@ const Dashboard = () => {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCategoryEmpty, setIsCategoryEmpty] = useState(false);
+  const [cartItem, setCartItems] = useState([]);
 
+  // get products
   const getProducts = async () => {
     try {
       const response = await axiosInstance.get("product");
@@ -54,6 +57,23 @@ const Dashboard = () => {
     }
   };
 
+  // get cart items
+  const getCartItems = async () => {
+    try {
+      const response = await axiosInstance.get("cart", {
+        headers: {
+          Authorization: `Bearer ${userToken}`,
+        },
+      });
+      const fetchedCartItems = response.data.data.data;
+      console.log(fetchedCartItems);
+      setCartItems(fetchedCartItems);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // get filtered products
   const getFilteredProducts = async (category) => {
     try {
       const response = await axiosInstance.get(`product?category=${category}`);
@@ -86,6 +106,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     getProducts();
+    getCartItems();
   }, []);
 
   const openProductModal = () => setIsProductModalOpen(true);
@@ -103,8 +124,6 @@ const Dashboard = () => {
   }, []);
 
   const isLogged = localStorage.getItem("access_token") ? true : false;
-
-  console.log(isLogged);
 
   const handleLogout = () => {
     toast.warning("You are now logged out. Please log in again..");
@@ -275,7 +294,7 @@ const Dashboard = () => {
                     </p>
                     <FaCartFlatbed color="#fff" size={20} />
                   </div>
-                  <p>Cart</p>
+                  <p>{cartItem}</p>
                 </div>
                 <div
                   className="flex items-end gap-1 cursor-pointer"

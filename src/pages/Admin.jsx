@@ -1,13 +1,10 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
-import CustomInput from "../components/CustomInput";
-import CustomDropdown from "../components/CustomDropDown";
 import Button from "../components/Button";
 import axiosInstance from "../helperFunctions/axios.utlil";
 import Spinner from "../components/Spinner/Spinner";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import CurrencyFormat from "react-currency-format";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -41,10 +38,7 @@ const Admin = () => {
     formData.append("image", imageFile);
 
     try {
-      const response = await axiosInstance.post(
-        "http://216.158.239.94:5100/api/v1/files/upload",
-        formData
-      );
+      const response = await axiosInstance.post("files/upload", formData);
       setImageFilename(response.data.data.image);
       console.log("image response", response.data.data.image);
       console.log(imageFile);
@@ -63,7 +57,7 @@ const Admin = () => {
       const response = await axiosInstance.post("product", productData);
       console.log(response.data.data);
       toast.success("Product Created");
-      navigate("/admin");
+      navigate("/");
     } catch (error) {
       toast.error(error.response?.data?.message || "Product creation failed");
     } finally {

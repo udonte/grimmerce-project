@@ -350,7 +350,7 @@ const Home = () => {
                     <div className="flex flex-col overflow-hidden">
                       <div className="w-full h-48 md:h-36 lg:h-48 overflow-hidden">
                         <img
-                          src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+                          src={`https://api.olumycosoft.com/file-service/file/${product.imageFilename}`}
                           alt={product.name}
                           className="w-full h-full object-cover"
                         />
