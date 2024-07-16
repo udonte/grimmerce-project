@@ -2,24 +2,9 @@ import React, { useEffect, useState } from "react";
 import Button from "../components/Button";
 import { useLocation, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import {
-  FaArrowDown,
-  FaLock,
-  FaMoneyBill,
-  FaRegUser,
-  FaSearch,
-  FaSignInAlt,
-  FaSignOutAlt,
-  FaUser,
-} from "react-icons/fa";
-import {
-  MdKeyboardArrowDown,
-  MdKeyboardArrowRight,
-  MdKeyboardArrowUp,
-} from "react-icons/md";
+import { FaSearch, FaSignInAlt, FaSignOutAlt, FaUser } from "react-icons/fa";
+import { MdKeyboardArrowDown, MdKeyboardArrowRight } from "react-icons/md";
 import { FaCartFlatbed } from "react-icons/fa6";
-import Cloth1 from "../assets/images/img (1).jpg";
-import data from "../data/data";
 import Footer from "../components/footer/Footer";
 import Modal from "../components/Modal/Modal";
 import { RiCloseLine, RiDeleteBack2Fill, RiMenu3Line } from "react-icons/ri";
