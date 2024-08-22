@@ -3,8 +3,15 @@ import Modal from "./Modal/Modal";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useDispatch } from "react-redux";
+import {
+  addCartItem,
+  fetchCartItems,
+  refetch,
+} from "../Features/cart/cart.slice";
 
 const ProductDetailsModal = ({ isOpen, onClose, isLogged, product }) => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [prodQty, setProdQty] = useState(1);
 
@@ -29,6 +36,12 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged, product }) => {
     } else {
       toast.error("Please login");
     }
+  };
+
+  const handleAddToCart = (productId, quantity) => {
+    dispatch(addCartItem({ productId, quantity }));
+    dispatch(fetchCartItems());
+    dispatch(refetch());
   };
 
   return (
@@ -73,7 +86,9 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged, product }) => {
             </div>
             <div className="w-full">
               {isLogged ? (
-                <Button>Add to cart</Button>
+                <Button onClick={() => handleAddToCart(product.id, prodQty)}>
+                  Add to cart
+                </Button>
               ) : (
                 <Button onClick={() => navigate("/login")}>
                   Please Login to continue

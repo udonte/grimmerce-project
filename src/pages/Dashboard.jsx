@@ -12,8 +12,11 @@ import ProductDetailsModal from "../components/ProductDetailsModal";
 import { GiHamburgerMenu } from "react-icons/gi";
 import axiosInstance from "../helperFunctions/axios.utlil";
 import CartModal from "../components/CartModal";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCartItems } from "../Features/cart/cart.slice";
 
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const userToken = localStorage.getItem("access_token");
   const navigate = useNavigate();
   const { state } = useLocation();
@@ -27,7 +30,15 @@ const Dashboard = () => {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCategoryEmpty, setIsCategoryEmpty] = useState(false);
-  const [cartItem, setCartItems] = useState([]);
+  const [cart, setCart] = useState([]);
+
+  const { items, status } = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    if (status === "loading" || status === "refetch") {
+      dispatch(fetchCartItems());
+    }
+  }, [dispatch, status]);
 
   // get products
   const getProducts = async () => {
@@ -36,23 +47,8 @@ const Dashboard = () => {
       const fetchedProducts = response.data.data.data;
       setProducts(fetchedProducts);
       console.log(fetchedProducts);
+      // console.log(fetchedProducts);
       setFilteredProducts(fetchedProducts);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  // get cart items
-  const getCartItems = async () => {
-    try {
-      const response = await axiosInstance.get("cart", {
-        headers: {
-          Authorization: `Bearer ${userToken}`,
-        },
-      });
-      const fetchedCartItems = response.data.data.data;
-      console.log(fetchedCartItems);
-      setCartItems(fetchedCartItems);
     } catch (error) {
       console.log(error);
     }
@@ -66,7 +62,7 @@ const Dashboard = () => {
       setIsCategoryEmpty(fetchedProducts.length === 0);
       setFilteredProducts(fetchedProducts);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -91,7 +87,8 @@ const Dashboard = () => {
 
   useEffect(() => {
     getProducts();
-    getCartItems();
+    fetchCartItems();
+    dispatch(fetchCartItems());
   }, []);
 
   const openProductModal = () => setIsProductModalOpen(true);
@@ -275,11 +272,10 @@ const Dashboard = () => {
                 >
                   <div className="relative ">
                     <p className="text-red-900 bg-white rounded-full h-4 w-4 p-1 absolute left-2 bottom-4 flex justify-center items-center text-xs">
-                      5
+                      {items.length}
                     </p>
                     <FaCartFlatbed color="#fff" size={20} />
                   </div>
-                  <p>{cartItem}</p>
                 </div>
                 <div
                   className="flex items-end gap-1 cursor-pointer"
@@ -293,7 +289,7 @@ const Dashboard = () => {
                 <div className="flex items-end gap-1 ">
                   <div className="relative cursor-pointer">
                     <p className="text-red-900 bg-white rounded-full h-4 w-4 p-1 absolute left-2 bottom-4 flex justify-center items-center text-xs">
-                      5
+                      {items.length}
                     </p>
                     <FaCartFlatbed color="#fff" size={20} />
                   </div>
@@ -362,7 +358,6 @@ const Dashboard = () => {
           </div>
         </div>
       </nav>
-
       {/* end of nav */}
 
       {/* category */}
@@ -508,7 +503,11 @@ const Dashboard = () => {
         onClose={closeProductModal}
         isLogged={isLogged}
       />
-      <CartModal isOpen={isCartModalOpen} onClose={closeCartModal} />
+      <CartModal
+        isOpen={isCartModalOpen}
+        onClose={closeCartModal}
+        items={items}
+      />
     </div>
   );
 };

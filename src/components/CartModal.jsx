@@ -1,17 +1,33 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
 import Modal from "./Modal/Modal";
 import Button from "./Button";
+import {
+  clearCart,
+  fetchCartItems,
+  removeCartItem,
+  removeItem,
+} from "../Features/cart/cart.slice";
 
 const CartModal = ({ isOpen, onClose }) => {
-  const [cartItems, setCartItems] = useState([
-    { id: 1, product: "Product 1", price: 10, quantity: 2 },
-    { id: 2, product: "Product 2", price: 20, quantity: 1 },
-    { id: 3, product: "Product 3", price: 15, quantity: 3 },
-  ]);
+  const dispatch = useDispatch();
+  const { items, status, itemNumber } = useSelector((state) => state.cart);
 
-  const handleDelete = (id) => {
-    setCartItems(cartItems.filter((item) => item.id !== id));
+  useEffect(() => {
+    if (status === "loading" || status === "refetch") {
+      dispatch(fetchCartItems());
+    }
+  }, [dispatch, status]);
+
+  const handleDelete = (item) => {
+    dispatch(removeCartItem(item.id));
+    dispatch(removeItem(item.id));
+    // dispatch(fetchCartItems());
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
   };
 
   return (
@@ -28,20 +44,20 @@ const CartModal = ({ isOpen, onClose }) => {
             </tr>
           </thead>
           <tbody className="text-sm">
-            {cartItems.map((item) => (
+            {items.map((item) => (
               <tr key={item.id}>
-                <td className="py-2 px-4 border">{item.product}</td>
-                <td className="py-2 px-4 border">${item.price}</td>
+                <td className="py-2 px-4 border">{item.product.name}</td>
+                <td className="py-2 px-4 border">${item.product.amount}</td>
                 <td className="py-2 px-4 border text-center">
                   {item.quantity}
                 </td>
                 <td className="py-2 px-4 border">
-                  ${(item.price * item.quantity).toFixed(2)}
+                  ${(item.product.amount * item.quantity).toFixed(2)}
                 </td>
                 <td className="py-2 px-4 border text-center">
                   <button
                     className="text-red-500"
-                    onClick={() => handleDelete(item.id)}
+                    onClick={() => handleDelete(item)}
                   >
                     <FaTrashAlt />
                   </button>
@@ -54,16 +70,17 @@ const CartModal = ({ isOpen, onClose }) => {
         <div className="flex flex-col items-end text-xs mt-12 gap-2 w-full">
           <div className="flex items-center justify-between w-full px-4">
             <p>Number of Items:</p>
-            <p className="font-bold">
-              {cartItems.reduce((total, item) => total + item.quantity, 0)}
-            </p>
+            <p className="font-bold">{items.length}</p>
           </div>
           <div className="flex items-center justify-between w-full px-4">
             <p>Subtotal:</p>
             <p className="font-bold">
               $
-              {cartItems
-                .reduce((total, item) => total + item.price * item.quantity, 0)
+              {items
+                .reduce(
+                  (total, item) => total + item.product.amount * item.quantity,
+                  0
+                )
                 .toFixed(2)}
             </p>
           </div>
@@ -75,13 +92,18 @@ const CartModal = ({ isOpen, onClose }) => {
             <p>Total:</p>
             <p className="font-bold">
               $
-              {cartItems
-                .reduce((total, item) => total + item.price * item.quantity, 0)
+              {items
+                .reduce(
+                  (total, item) => total + item.product.amount * item.quantity,
+                  0
+                )
                 .toFixed(2)}
             </p>
           </div>
           <div className="flex items-center justify-between w-full px-4 gap-4">
-            <Button color={"secondary"}>Clear cart</Button>
+            <Button color={"secondary"} onClick={handleClearCart}>
+              Clear cart
+            </Button>
             <Button>Pay</Button>
           </div>
         </div>
