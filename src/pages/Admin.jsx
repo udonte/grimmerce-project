@@ -73,8 +73,21 @@ const Admin = () => {
           onSubmit={handleSubmit(onSubmit)}
           className="w-full md:w-[50%] h-full py-4"
         >
-          <p className="text-2xl font-bold">Create Product</p>
-          <p className="mb-8 text-xs">Kindly fill the product details</p>
+          <div className="flex items-start justify-between">
+            <div>
+              <p className="text-2xl font-bold">Create Product</p>
+              <p className="mb-8 text-xs">Kindly fill the product details</p>
+            </div>
+            <div>
+              <Button
+                type="submit"
+                className={"w-fit"}
+                onClick={() => navigate("/seller")}
+              >
+                Go to dashboard
+              </Button>
+            </div>
+          </div>
 
           {/* Image File */}
           <div className="mb-2 w-full">

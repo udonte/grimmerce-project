@@ -7,6 +7,7 @@ import AccountCreated from "./pages/AccountCreated";
 import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
+import SellerDashboard from "./pages/SellerDashboard";
 
 const App = () => {
   return (
@@ -19,6 +20,7 @@ const App = () => {
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/account-created" element={<AccountCreated />} />
         <Route path="/admin" element={<Admin />} />
+        <Route path="/seller" element={<SellerDashboard />} />
       </Routes>
     </BrowserRouter>
   );

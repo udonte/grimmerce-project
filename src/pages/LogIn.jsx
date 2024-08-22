@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import Spinner from "../components/Spinner/Spinner";
 
 const LogIn = () => {
+  const [userData, setUserData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const {

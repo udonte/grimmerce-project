@@ -65,9 +65,11 @@ export const removeCartItem = createAsyncThunk(
       console.log(response.data.message);
       console.log(response.data.message);
       fetchCartItems();
+      toast.success(response.data.message);
       return response.data.message;
     } catch (error) {
-      return rejectWithValue(error.response.message);
+      toast.success(error);
+      return rejectWithValue(error.response.error);
     }
   }
 );
