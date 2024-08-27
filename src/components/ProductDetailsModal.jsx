@@ -49,7 +49,7 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged, product }) => {
       <div className="">
         <div className="flex flex-col md:flex-row md:items-start md:gap-8">
           <img
-            src={`http://216.158.239.94:5100/file/${product.imageFilename}`}
+            src={`https://api.olumycosoft.com/file-service/file/${product.imageFilename}`}
             alt={product.name}
             className="w-[200px] h-auto rounded"
           />
