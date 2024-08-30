@@ -15,9 +15,8 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged, product }) => {
   const navigate = useNavigate();
   const [prodQty, setProdQty] = useState(1);
 
-  // Reset prodQty whenever product changes
   useEffect(() => {
-    setProdQty(1); // Reset to default quantity
+    setProdQty(1); // Reset to default quantity when product changes
   }, [product]);
 
   const decrementQty = () => {
@@ -42,59 +41,79 @@ const ProductDetailsModal = ({ isOpen, onClose, isLogged, product }) => {
     dispatch(addCartItem({ productId, quantity }));
     dispatch(fetchCartItems());
     dispatch(refetch());
+    onClose();
   };
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} header="Product Details">
-      <div className="">
-        <div className="flex flex-col md:flex-row md:items-start md:gap-8">
-          <img
-            src={`https://api.olumycosoft.com/file-service/file/${product.imageFilename}`}
-            alt={product.name}
-            className="w-[200px] h-auto rounded"
-          />
-          <div className="flex flex-col gap-4">
-            <p className="font-bold text-xl">{product.name}</p>
+      <div className="flex flex-col md:flex-row md:items-start md:gap-8 pr-4 md:pr-0">
+        {/* Product Image */}
+        <img
+          src={`https://api.olumycosoft.com/file-service/file/${product.imageFilename}`}
+          alt={product.name}
+          className="w-full md:w-[250px] h-auto rounded-lg object-cover"
+        />
 
-            <p className="font-bold">₦{product.amount}</p>
-            <div>
-              <p className="font-bold">Description:</p>
-              <p>{product.description}</p>
-            </div>
-            <div>
-              <p className="mb-4">
-                <span className="font-bold ">Quantities:</span>{" "}
-                {product.quantity}
-              </p>
-              <div className="flex items-center">
-                <div className="w-12">
-                  <Button color={"secondary"} onClick={decrementQty}>
-                    -
-                  </Button>
-                </div>
-                <div className="text-center w-12">{prodQty}</div>
-                <div className="w-12">
-                  <Button onClick={incrementQty}>+</Button>
-                </div>
+        {/* Product Details */}
+        <div className="flex flex-col gap-6 mt-4 md:mt-0">
+          <p className="font-bold text-2xl text-gray-800">{product.name}</p>
+          <p className="font-bold text-xl text-green-700">₦{product.amount}</p>
+
+          <div>
+            <p className="font-bold text-gray-800">Description:</p>
+            <p className="text-gray-600">{product.description}</p>
+          </div>
+
+          <div>
+            <p className="font-bold text-gray-800">
+              Quantities: {product.quantity}
+            </p>
+            <div className="flex items-center gap-4 mt-2">
+              <div>
+                <Button
+                  color={"secondary"}
+                  onClick={decrementQty}
+                  className="px-4 py-2"
+                >
+                  -
+                </Button>
+              </div>
+              <div className="text-lg font-medium">{prodQty}</div>
+              <div>
+                <Button onClick={incrementQty} className="px-4 py-2">
+                  +
+                </Button>
               </div>
             </div>
-            <div>
-              <p className="font-bold">Status</p>
-              <p className="text-green-500">
-                {product.outOfStock ? "Unavailable" : "Available"}
-              </p>
-            </div>
-            <div className="w-full">
-              {isLogged ? (
-                <Button onClick={() => handleAddToCart(product.id, prodQty)}>
-                  Add to cart
-                </Button>
-              ) : (
-                <Button onClick={() => navigate("/login")}>
-                  Please Login to continue
-                </Button>
-              )}
-            </div>
+          </div>
+
+          <div>
+            <p className="font-bold text-gray-800">Status:</p>
+            <p
+              className={`font-medium ${
+                product.outOfStock ? "text-red-500" : "text-green-500"
+              }`}
+            >
+              {product.outOfStock ? "Unavailable" : "Available"}
+            </p>
+          </div>
+
+          <div className="mt-6">
+            {isLogged ? (
+              <Button
+                onClick={() => handleAddToCart(product.id, prodQty)}
+                className="w-full px-4 py-2 rounded-lg"
+              >
+                Add to Cart
+              </Button>
+            ) : (
+              <Button
+                onClick={() => navigate("/login")}
+                className="w-full px-4 py-2 rounded-lg"
+              >
+                Please Login to Continue
+              </Button>
+            )}
           </div>
         </div>
       </div>
