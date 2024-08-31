@@ -38,11 +38,19 @@ const LogIn = () => {
   };
 
   return (
-    <div>
-      <div className="w-full h-screen flex items-start">
-        <div className="hidden md:flex md:w-1/2 bg-red-900 h-screen"></div>
-        <div className="w-full md:w-1/2 flex items-start justify-center py-4 px-4 md:px-0">
-          <form onSubmit={handleSubmit(onSubmit)} className="w-full md:w-[50%]">
+    <div className=" h-screen flex">
+      <div className="w-full h-screen flex item-start lg:items-center">
+        <div className="hidden lg:flex md:w-1/2 bg-red-900 h-screen">
+          <div className="flex flex-col items-center justify-center w-full">
+            <p className=" text-white text-[100px]">Grimmerce</p>
+            <p className="text-white">The Best Market place</p>
+          </div>
+        </div>
+        <div className="w-full lg:w-1/2 flex items-start justify-center py-4 px-4 lg:px-0">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="w-full md:w-[50%] "
+          >
             <p className="text-2xl font-bold mb-8">Log in</p>
             <div className="mb-2 w-full">
               <label className=" text-gray-500 font-bold">Email</label>

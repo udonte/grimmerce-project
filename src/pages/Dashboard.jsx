@@ -15,6 +15,7 @@ import CartModal from "../components/CartModal";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartItems } from "../Features/cart/cart.slice";
 import { CgClose } from "react-icons/cg";
+import PaymentMethodModal from "../components/PaymentMethodModal";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -24,6 +25,7 @@ const Dashboard = () => {
   const { state } = useLocation();
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+  const [isPaymentMethodOpen, setIsPaymentMethodModalOpen] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleAcctmenu, setToggleAcctMenu] = useState(false);
   const [products, setProducts] = useState([]);
@@ -94,10 +96,17 @@ const Dashboard = () => {
     dispatch(fetchCartItems());
   }, []);
 
+  // modals
   const openProductModal = () => setIsProductModalOpen(true);
   const closeProductModal = () => setIsProductModalOpen(false);
   const openCartModal = () => setIsCartModalOpen(true);
   const closeCartModal = () => setIsCartModalOpen(false);
+  const openPaymentMethodModal = () => {
+    setIsPaymentMethodModalOpen(true);
+    setToggleMenu(false);
+    setToggleAcctMenu(false);
+  };
+  const closePaymentMethodModal = () => setIsPaymentMethodModalOpen(false);
 
   // Check if state exist before accessing them
   const firstName = state?.firstName; //
@@ -108,7 +117,7 @@ const Dashboard = () => {
     }
   }, []);
 
-  const isLogged = localStorage.getItem("access_token") ? true : false;
+  const isLogged = Boolean(localStorage.getItem("access_token") ? true : false);
 
   const handleLogout = () => {
     toast.warning("You are now logged out. Please log in again..");
@@ -252,7 +261,10 @@ const Dashboard = () => {
                       <div className="px-3 py-3 gap-x-3 w-full  text-sm hover:bg-gray-100 cursor-pointer">
                         <p className="text-left">Reset Password</p>
                       </div>
-                      <div className="px-3 py-3 gap-x-3 w-full  text-sm hover:bg-gray-100 cursor-pointer">
+                      <div
+                        className="px-3 py-3 gap-x-3 w-full  text-sm hover:bg-gray-100 cursor-pointer"
+                        onClick={openPaymentMethodModal}
+                      >
                         <p className="text-left">Payment Method</p>
                       </div>
                       <div className="px-3 py-3 gap-x-3 w-full  text-sm hover:bg-gray-100 cursor-pointer">
@@ -346,7 +358,10 @@ const Dashboard = () => {
                         <div className="px-3 py-3 gap-x-3 w-full  hover:bg-gray-100 cursor-pointer">
                           <p className="text-left">Reset Password</p>
                         </div>
-                        <div className="px-3 py-3 gap-x-3 w-full  hover:bg-gray-100 cursor-pointer">
+                        <div
+                          className="px-3 py-3 gap-x-3 w-full  hover:bg-gray-100 cursor-pointer"
+                          onClick={openPaymentMethodModal}
+                        >
                           <p className="text-left">Payment Method</p>
                         </div>
                         <div className="px-3 py-3 gap-x-3 w-full  hover:bg-gray-100 cursor-pointer">
@@ -568,6 +583,10 @@ const Dashboard = () => {
         isOpen={isCartModalOpen}
         onClose={closeCartModal}
         items={items}
+      />
+      <PaymentMethodModal
+        isOpen={isPaymentMethodOpen}
+        onClose={closePaymentMethodModal}
       />
     </div>
   );

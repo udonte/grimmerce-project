@@ -39,8 +39,13 @@ const SignUp = () => {
 
   return (
     <div className=" h-screen flex">
-      <div className="hidden md:block md:w-1/2 bg-red-900 h-full"></div>
-      <div className="w-full md:w-1/2 flex items-start justify-center md:px-0 h-full px-2">
+      <div className="hidden lg:flex md:w-1/2 bg-red-900 h-screen">
+        <div className="flex flex-col items-center justify-center w-full h-full">
+          <p className=" text-white text-[100px]">Grimmerce</p>
+          <p className="text-white">The Best Market place</p>
+        </div>
+      </div>
+      <div className="w-full lg:w-1/2 flex items-start justify-center py-4 px-4 lg:px-0">
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="w-full md:w-[50%] h-full py-4"
