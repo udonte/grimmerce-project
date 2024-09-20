@@ -2,9 +2,10 @@ import React, { useState, useEffect } from "react";
 import Modal from "./Modal/Modal";
 import Button from "./Button";
 import CustomRadioButton from "./CustomRadioButton";
+import { toast } from "react-toastify";
 
 const PaymentMethodModal = ({ isOpen, onClose }) => {
-  const [paymentMethod, setPaymentMethod] = useState("card");
+  const [paymentMethod, setPaymentMethod] = useState("");
 
   const handleMethodChange = (event) => {
     setPaymentMethod(event.target.value);
@@ -12,8 +13,65 @@ const PaymentMethodModal = ({ isOpen, onClose }) => {
 
   const handleSave = () => {
     console.log(paymentMethod);
+    AddPaymentMethod();
     onClose();
   };
+
+  const AddPaymentMethod = async () => {
+    try {
+      const userToken = localStorage.getItem("access_token");
+      const apiResponse = await fetch(
+        "https://api.olumycosoft.com/emart/api/v1/payment/add-payment-method",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify({
+            name: paymentMethod,
+          }),
+        }
+      );
+      const result = await apiResponse.json();
+      console.log(result);
+      toast.success(result.message);
+      return result;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      return error;
+    }
+  };
+
+  const fetchPaymentMethod = async () => {
+    try {
+      const userToken = localStorage.getItem("access_token");
+      const apiResponse = await fetch(
+        "https://api.olumycosoft.com/emart/api/v1/payment/payment-method",
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+        }
+      );
+      const result = await apiResponse.json();
+      console.log(result.data);
+      setPaymentMethod(result.data.name);
+      toast.success(result.message);
+      return result;
+    } catch (error) {
+      console.log(error);
+      toast.error(error.message);
+      return error;
+    }
+  };
+
+  useEffect(() => {
+    fetchPaymentMethod();
+  }, []);
 
   return (
     <Modal isOpen={isOpen} onClose={onClose} header="Payment method">
@@ -67,10 +125,10 @@ const PaymentMethodModal = ({ isOpen, onClose }) => {
           >
             <p>Bank Transfer</p>
             <CustomRadioButton
-              id="bank-transfer"
+              id="bank"
               name="paymentMethod"
-              value="bank-transfer"
-              checked={paymentMethod === "bank-transfer"}
+              value="bank"
+              checked={paymentMethod === "bank"}
               onChange={handleMethodChange}
               label=""
               size="sm" // 'sm', 'md', or 'lg'
