@@ -11,7 +11,7 @@ import {
 } from "../Features/cart/cart.slice";
 import { BsCartX } from "react-icons/bs";
 
-const CartModal = ({ isOpen, onClose }) => {
+const CartModal = ({ isOpen, onClose, openIframe, setPayResults }) => {
   const dispatch = useDispatch();
   const { items, status } = useSelector((state) => state.cart);
 
@@ -28,6 +28,38 @@ const CartModal = ({ isOpen, onClose }) => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
+  };
+
+  const totalAmount = items
+    .reduce((total, item) => total + item.product.amount * item.quantity, 0)
+    .toFixed(2);
+
+  const handlePay = async (totalAmount) => {
+    onClose();
+    openIframe();
+    try {
+      const userToken = localStorage.getItem("access_token");
+      const apiResponse = await fetch(
+        "https://api.olumycosoft.com/emart/api/v1/payment",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${userToken}`,
+          },
+          body: JSON.stringify({
+            amount: totalAmount,
+          }),
+        }
+      );
+      const result = await apiResponse.json();
+      setPayResults(result);
+      console.log(result);
+      return result;
+    } catch (error) {
+      console.log(error);
+      return error;
+    }
   };
 
   return (
@@ -112,22 +144,13 @@ const CartModal = ({ isOpen, onClose }) => {
               </div>
               <div className="flex items-center justify-between w-full px-4">
                 <p>Total:</p>
-                <p className="font-bold">
-                  $
-                  {items
-                    .reduce(
-                      (total, item) =>
-                        total + item.product.amount * item.quantity,
-                      0
-                    )
-                    .toFixed(2)}
-                </p>
+                <p className="font-bold">${totalAmount}</p>
               </div>
               <div className="flex items-center justify-between w-full px-4 gap-4">
                 <Button color={"secondary"} onClick={handleClearCart}>
                   Clear cart
                 </Button>
-                <Button>Pay</Button>
+                <Button onClick={handlePay(totalAmount)}>Pay</Button>
               </div>
             </div>
           </>
@@ -209,29 +232,19 @@ const CartModal = ({ isOpen, onClose }) => {
               </div>
               <div className="flex justify-between text-sm">
                 <span>Total:</span>
-                <span className="font-bold">
-                  $
-                  {items
-                    .reduce(
-                      (total, item) =>
-                        total + item.product.amount * item.quantity,
-                      0
-                    )
-                    .toFixed(2)}
-                </span>
+                <span className="font-bold">${totalAmount}</span>
               </div>
               <div className="flex justify-end space-x-4 mt-4">
                 <Button color={"secondary"} onClick={handleClearCart}>
                   Clear cart
                 </Button>
-                <Button>Pay</Button>
+                <Button onClick={handlePay(totalAmount)}>Pay</Button>
               </div>
             </div>
           </>
         ) : (
           <div className="text-center py-10 flex flex-col items-center justify-center">
             <BsCartX className="text-[100px] mb-12 text-red-800" />
-
             <p className="text-lg font-semibold mb-4">Your cart is empty</p>
             <div className="w-full md:w-[200px]">
               <Button onClick={onClose}>Continue Shopping</Button>

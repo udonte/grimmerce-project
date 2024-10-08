@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCartItems } from "../Features/cart/cart.slice";
 import { CgClose } from "react-icons/cg";
 import PaymentMethodModal from "../components/PaymentMethodModal";
+import PaymentIframe from "../components/PaymentIframe";
 
 const Dashboard = () => {
   const dispatch = useDispatch();
@@ -26,6 +27,7 @@ const Dashboard = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodModalOpen] = useState(false);
+  const [isPaymentIframeOpen, setIsPaymentIframeModalOpen] = useState(false);
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleAcctmenu, setToggleAcctMenu] = useState(false);
   const [products, setProducts] = useState([]);
@@ -34,6 +36,7 @@ const Dashboard = () => {
   const [currentCategory, setCurrentCategory] = useState("all");
   const [searchQuery, setSearchQuery] = useState("");
   const [isCategoryEmpty, setIsCategoryEmpty] = useState(false);
+  const [payResults, setPayResults] = useState(null);
 
   const { items, status } = useSelector((state) => state.cart);
 
@@ -97,6 +100,7 @@ const Dashboard = () => {
   }, []);
 
   // modals
+  const openPaymentIframeModal = () => setIsPaymentIframeModalOpen(true);
   const openProductModal = () => setIsProductModalOpen(true);
   const closeProductModal = () => setIsProductModalOpen(false);
   const openCartModal = () => setIsCartModalOpen(true);
@@ -107,6 +111,7 @@ const Dashboard = () => {
     setToggleAcctMenu(false);
   };
   const closePaymentMethodModal = () => setIsPaymentMethodModalOpen(false);
+  const closePaymentIframeModal = () => setIsPaymentIframeModalOpen(false);
 
   // Check if state exist before accessing them
   const firstName = state?.firstName; //
@@ -582,11 +587,17 @@ const Dashboard = () => {
       <CartModal
         isOpen={isCartModalOpen}
         onClose={closeCartModal}
-        items={items}
+        openIframe={openPaymentIframeModal}
+        setPayResults={setPayResults}
       />
       <PaymentMethodModal
         isOpen={isPaymentMethodOpen}
         onClose={closePaymentMethodModal}
+      />
+      <PaymentIframe
+        payResults={payResults}
+        isOpen={isPaymentIframeOpen}
+        onClose={closePaymentIframeModal}
       />
     </div>
   );

@@ -23,7 +23,7 @@ const PaymentMethodModal = ({ isOpen, onClose }) => {
       const apiResponse = await fetch(
         "https://api.olumycosoft.com/emart/api/v1/payment/add-payment-method",
         {
-          method: "POST",
+          method: "PUT",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${userToken}`,
