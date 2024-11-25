@@ -1,8 +1,15 @@
 import React from "react";
 import { GiCancel } from "react-icons/gi";
 
-const Modal = ({ isOpen, onClose, children, header = "" }) => {
+const Modal = ({ isOpen, onClose, children, header = "", size = "md" }) => {
   if (!isOpen) return null;
+
+  // Define size classes for different modal widths
+  const sizeClasses = {
+    sm: "max-w-sm",
+    md: "max-w-2xl", // Default size
+    lg: "max-w-4xl",
+  };
 
   return (
     <div
@@ -10,11 +17,9 @@ const Modal = ({ isOpen, onClose, children, header = "" }) => {
       style={{
         scrollbarWidth: "thin" /* For Firefox */,
         WebkitScrollbarWidth: "thin" /* For WebKit-based browsers */,
-        scrollbarTrackColor:
-          "#f1f1f1" /* Background color of the scrollbar track */,
-        scrollbarColor:
-          "#E2E4E8 #ffffff" /* Color of the scrollbar thumb and track */,
-        borderRadius: "4px" /* Radius of the scrollbar thumb */,
+        scrollbarTrackColor: "#f1f1f1",
+        scrollbarColor: "#E2E4E8 #ffffff",
+        borderRadius: "4px",
       }}
     >
       {/* Overlay */}
@@ -24,7 +29,9 @@ const Modal = ({ isOpen, onClose, children, header = "" }) => {
       ></div>
 
       {/* Modal Content */}
-      <div className="relative bg-white w-full max-w-lg md:max-w-2xl lg:max-w-4xl p-6 md:p-8 rounded-lg shadow-lg mx-4 sm:mx-6 md:mx-auto">
+      <div
+        className={`relative bg-white w-full ${sizeClasses[size]} p-6 md:p-8 rounded-lg shadow-lg mx-4 sm:mx-6 md:mx-auto`}
+      >
         {/* Header */}
         <div className="flex items-center justify-between w-full mb-4">
           {header && <p className="text-xl md:text-2xl font-bold">{header}</p>}
@@ -40,13 +47,11 @@ const Modal = ({ isOpen, onClose, children, header = "" }) => {
         <div
           className="w-full overflow-y-auto max-h-[70vh]"
           style={{
-            scrollbarWidth: "thin" /* For Firefox */,
-            WebkitScrollbarWidth: "thin" /* For WebKit-based browsers */,
-            scrollbarTrackColor:
-              "#f1f1f1" /* Background color of the scrollbar track */,
-            scrollbarColor:
-              "#E2E4E8 #ffffff" /* Color of the scrollbar thumb and track */,
-            borderRadius: "4px" /* Radius of the scrollbar thumb */,
+            scrollbarWidth: "thin",
+            WebkitScrollbarWidth: "thin",
+            scrollbarTrackColor: "#f1f1f1",
+            scrollbarColor: "#E2E4E8 #ffffff",
+            borderRadius: "4px",
           }}
         >
           {children}

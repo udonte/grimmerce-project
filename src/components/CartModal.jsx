@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { FaTrashAlt } from "react-icons/fa";
 import Modal from "./Modal/Modal";
@@ -10,8 +10,10 @@ import {
   removeItem,
 } from "../Features/cart/cart.slice";
 import { BsCartX } from "react-icons/bs";
+import Spinner from "./Spinner/Spinner";
 
 const CartModal = ({ isOpen, onClose, openIframe, setPayResults }) => {
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   const { items, status } = useSelector((state) => state.cart);
 
@@ -35,8 +37,7 @@ const CartModal = ({ isOpen, onClose, openIframe, setPayResults }) => {
     .toFixed(2);
 
   const handlePay = async (totalAmount) => {
-    onClose();
-    openIframe();
+    setIsLoading(true);
     try {
       const userToken = localStorage.getItem("access_token");
       const apiResponse = await fetch(
@@ -49,10 +50,13 @@ const CartModal = ({ isOpen, onClose, openIframe, setPayResults }) => {
           },
           body: JSON.stringify({
             amount: totalAmount,
+            callbackUrl: "https://grimmerce.netlify.app/payment-receipt",
           }),
         }
       );
       const result = await apiResponse.json();
+      onClose();
+      openIframe();
       setPayResults(result);
       console.log(result);
       return result;
@@ -63,7 +67,7 @@ const CartModal = ({ isOpen, onClose, openIframe, setPayResults }) => {
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} header="Cart">
+    <Modal isOpen={isOpen} onClose={onClose} header="Cart" size="md">
       {/* large and medium devices */}
       <div
         className="overflow-x-auto w-full p-6 hidden md:block"
@@ -150,7 +154,10 @@ const CartModal = ({ isOpen, onClose, openIframe, setPayResults }) => {
                 <Button color={"secondary"} onClick={handleClearCart}>
                   Clear cart
                 </Button>
-                <Button onClick={handlePay(totalAmount)}>Pay</Button>
+                <Button onClick={() => handlePay(totalAmount)}>
+                  {" "}
+                  {isLoading ? <Spinner /> : "Pay"}{" "}
+                </Button>
               </div>
             </div>
           </>
@@ -238,7 +245,7 @@ const CartModal = ({ isOpen, onClose, openIframe, setPayResults }) => {
                 <Button color={"secondary"} onClick={handleClearCart}>
                   Clear cart
                 </Button>
-                <Button onClick={handlePay(totalAmount)}>Pay</Button>
+                <Button onClick={() => handlePay(totalAmount)}>Pay</Button>
               </div>
             </div>
           </>

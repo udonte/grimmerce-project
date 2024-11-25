@@ -27,7 +27,9 @@ const Dashboard = () => {
   const [isProductModalOpen, setIsProductModalOpen] = useState(false);
   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const [isPaymentMethodOpen, setIsPaymentMethodModalOpen] = useState(false);
+
   const [isPaymentIframeOpen, setIsPaymentIframeModalOpen] = useState(false);
+
   const [toggleMenu, setToggleMenu] = useState(false);
   const [toggleAcctmenu, setToggleAcctMenu] = useState(false);
   const [products, setProducts] = useState([]);
@@ -100,7 +102,7 @@ const Dashboard = () => {
   }, []);
 
   // modals
-  const openPaymentIframeModal = () => setIsPaymentIframeModalOpen(true);
+
   const openProductModal = () => setIsProductModalOpen(true);
   const closeProductModal = () => setIsProductModalOpen(false);
   const openCartModal = () => setIsCartModalOpen(true);
@@ -111,9 +113,11 @@ const Dashboard = () => {
     setToggleAcctMenu(false);
   };
   const closePaymentMethodModal = () => setIsPaymentMethodModalOpen(false);
+
+  // PAYMENT IFRAME
+  const openPaymentIframeModal = () => setIsPaymentIframeModalOpen(true);
   const closePaymentIframeModal = () => setIsPaymentIframeModalOpen(false);
 
-  // Check if state exist before accessing them
   const firstName = state?.firstName; //
 
   useEffect(() => {
@@ -463,7 +467,7 @@ const Dashboard = () => {
       {/* end of category */}
 
       {/* main page */}
-      <div className="px-4 md:px-8 lg:px-12 py-8">
+      <div className="px-4 md:px-8 lg:px-12 py-8 min-h-screen">
         {isCategoryEmpty ? (
           <div className="h-screen text-center font-bodl">
             <p className="text-xl text-red-500">

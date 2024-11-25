@@ -35,11 +35,9 @@ const PaymentMethodModal = ({ isOpen, onClose }) => {
       );
       const result = await apiResponse.json();
       console.log(result);
-      toast.success(result.message);
       return result;
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
       return error;
     }
   };
@@ -60,11 +58,9 @@ const PaymentMethodModal = ({ isOpen, onClose }) => {
       const result = await apiResponse.json();
       console.log(result.data);
       setPaymentMethod(result.data.name);
-      toast.success(result.message);
       return result;
     } catch (error) {
       console.log(error);
-      toast.error(error.message);
       return error;
     }
   };

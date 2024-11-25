@@ -8,6 +8,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import Dashboard from "./pages/Dashboard";
 import Admin from "./pages/Admin";
 import SellerDashboard from "./pages/SellerDashboard";
+import PaymentReceipt from "./pages/PaymentReceipt";
 
 const App = () => {
   return (
@@ -21,6 +22,7 @@ const App = () => {
         <Route path="/account-created" element={<AccountCreated />} />
         <Route path="/admin" element={<Admin />} />
         <Route path="/seller" element={<SellerDashboard />} />
+        <Route path="/payment-receipt" element={<PaymentReceipt />} />
       </Routes>
     </BrowserRouter>
   );
